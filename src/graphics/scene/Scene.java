@@ -27,14 +27,6 @@ public class Scene {
         this.sceneCamera = sceneCamera;
     }
 
-    public void addToQueue(String mesh, String shader, PositionController tPos, RotationController tRot) {
-        addToQueue(new RenderJob(meshes.get(mesh), shaders.get(shader), tPos, tRot));
-    }
-
-    public void addToQueue(RenderJob job) {
-        renderJobs.add(job);
-    }
-
     public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {
         renderMesh(meshes.get(mesh), shaders.get(shader), tPos, tRot);
     }
@@ -59,6 +51,9 @@ public class Scene {
         return shaders;
     }
 
+    // public void registerShader(String name, float[] color) {
+    // shaders.put(name, new Shader().create(color));
+    // }
     public void registerShader(ArrayList<Pair<String, float[]>> shaderList) {
         shaderList.forEach((p) -> {
             shaders.put(p.first, new Shader().create(p.second));
@@ -74,6 +69,9 @@ public class Scene {
         return meshes;
     }
 
+    // public void registerMesh(String name, Mesh mesh) {
+    // meshes.put(name, mesh);
+    // }
     public void registerMesh(ArrayList<Pair<String, Mesh>> meshList) {
         meshList.forEach((p) -> {
             meshes.put(p.first, p.second);
@@ -101,9 +99,5 @@ public class Scene {
 
     public void clearRenderQueue() {
         renderJobs.clear();
-    }
-
-    public ArrayList<RenderJob> getRenderQueue() {
-        return renderJobs;
     }
 }

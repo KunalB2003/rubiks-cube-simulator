@@ -68,10 +68,10 @@ public class Main {
                 while (!window.update()) {
                         glClear(GL_COLOR_BUFFER_BIT);
 
-                        // Gather objects with renderMesh
-                        // Collect into array
-                        // sort (high -> low)
-                        // render in order
+                        //Gather objects with renderMesh
+                        //Collect into array
+                        //sort (high -> low)        
+                        //render in order
 
                         scene.renderMesh("square", "purple",
                                         (t) -> {
@@ -91,11 +91,8 @@ public class Main {
                                                 t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
                                         });
 
-
-
-                        frame[0]++;
                         window.swapBuffers();
-                        scene.clearRenderQueue();
+                        frame[0]++;
                 }
 
                 scene.destroy();
