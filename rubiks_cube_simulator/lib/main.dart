@@ -104,25 +104,38 @@ class _MainAppState extends State<MainApp> {
       home: Scaffold(
         body: Builder(
           builder: (BuildContext context) {
-            //initsize
-            initSize(BuildContext context) {
-              if (screenSize != null) {
-                return;
-              }
-
-              final mqd = MediaQuery.of(context);
-
-              screenSize = mqd.size;
-              dpr = mqd.devicePixelRatio;
-
-              initPlatformState();
-            }
-
-            //return line
-            return const Text("test");
+            initSize(context);
+            return (_build(context));
           },
         ),
       ),
+    );
+  }
+
+  Widget _build(BuildContext context) {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Container(
+                width: width,
+                height: height,
+                color: Colors.black,
+                child: Builder(builder: (BuildContext context) {
+                  if (kIsWeb) {
+                    return three3dRender.isInitialized
+                        ? HtmlElementView(
+                            viewType: three3dRender.textureId!.toString())
+                        : Container();
+                  } else {
+                    return three3dRender.isInitialized
+                        ? Texture(textureId: three3dRender.textureId!)
+                        : Container();
+                  }
+                })),
+          ],
+        ),
+      ],
     );
   }
 
@@ -181,7 +194,6 @@ class _MainAppState extends State<MainApp> {
       print(renderer!.info.render);
     }
 
-    // 重要 更新纹理之前一定要调用 确保gl程序执行完毕
     gl.flush();
 
     // var pixels = _gl.readCurrentPixels(0, 0, 10, 10);
