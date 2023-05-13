@@ -1,4 +1,4 @@
-package src.graphics;
+package src.graphics.shapes;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;

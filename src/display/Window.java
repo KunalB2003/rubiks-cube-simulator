@@ -1,4 +1,4 @@
-package src.io;
+package src.display;
 
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
@@ -27,7 +27,7 @@ import org.lwjgl.opengl.GL;
 
 public class Window {
     private long window;
-    int width, height;
+    private int width, height;
 
     public Window(int width, int height) {
         this.width = width;
