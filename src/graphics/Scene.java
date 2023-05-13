@@ -36,6 +36,7 @@ public class Scene {
         shader.useShader();
         shader.setCamera(sceneCamera);
         shader.setTransform(transform);
+        shader.setColor();
 
         mesh.draw();
     }
@@ -44,8 +45,8 @@ public class Scene {
         return shaders;
     }
 
-    public void registerShader(String name) {
-        shaders.put(name, new Shader().create(name));
+    public void registerShader(String name, float[] color) {
+        shaders.put(name, new Shader().create(color));
     }
 
     public void removeShader(String name) {

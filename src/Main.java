@@ -1,10 +1,10 @@
 package src;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_FILL;
+import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glPolygonMode;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -50,9 +50,11 @@ public class Main {
                                 1, -1, 0
                 }));
 
-                scene.registerShader("cyan");
-                scene.registerShader("red");
-                scene.registerShader("purple");
+                scene.registerShader("cyan", new float[] { 0, 1, 0.67f });
+                scene.registerShader("red", new float[] { 1, 0, 0 });
+                scene.registerShader("purple", new float[] { 0.82f, 0.0f, 1.0f });
+
+                glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
                 float[] frame = { 0 };
                 while (!window.update()) {

@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
@@ -27,24 +28,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.joml.Vector4f;
-
 import src.graphics.transform.Transform;
 
 public class Shader {
     private int vertexShader, fragmentShader, program;
-    private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject;
+    private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject, uniColor;
+
+    private float[] color;
 
     public Shader() {
     }
 
-    public Shader create(String shader) {
+    public Shader create(float[] color) {
+        if (color.length != 3) {
+            throw new IllegalArgumentException("color parameter requires exactly 3 values for r, g, and b for shader.");
+        }
+        this.color = color;
+
         int success;
 
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        
+
         glShaderSource(vertexShader, readSource("basic.vs"));
-        
+
         glCompileShader(vertexShader);
 
         success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
@@ -54,7 +60,7 @@ public class Shader {
         }
 
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, readSource(shader + ".fs"));
+        glShaderSource(fragmentShader, readSource("basic.fs"));
 
         glCompileShader(fragmentShader);
 
@@ -84,6 +90,7 @@ public class Shader {
         uniMatProjection = glGetUniformLocation(program, "cameraProjection");
         uniMatTransformWorld = glGetUniformLocation(program, "transformWorld");
         uniMatTransformObject = glGetUniformLocation(program, "transformObject");
+        uniColor = glGetUniformLocation(program, "color");
 
         return this;
     }
@@ -101,48 +108,55 @@ public class Shader {
     }
 
     public void setCamera(Camera camera) {
-		if (uniMatProjection != -1) {
-			float matrix[] = new float[16];
-			camera.getProjection().get(matrix);
-			glUniformMatrix4fv(uniMatProjection, false, matrix);
-		}
-		if (uniMatTransformWorld != -1) {
-			float matrix[] = new float[16];
-			camera.getTransformation().get(matrix);
-			glUniformMatrix4fv(uniMatTransformWorld, false, matrix);
-		}
-	}
-	
-	public void setTransform(Transform transform) {
-		if (uniMatTransformObject != -1) {
-			float matrix[] = new float[16];
-			transform.getTransformation().get(matrix);
-			glUniformMatrix4fv(uniMatTransformObject, false, matrix);
-		}
-	}
-	
-	private String readSource(String file) {
-		BufferedReader reader = null;
-		StringBuilder sourceBuilder = new StringBuilder();
-		
-		try {
-			reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
-			
-			String line;
-			
-			while ((line = reader.readLine()) != null) {
-				sourceBuilder.append(line + "\n");
-			}
-		} catch(IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return sourceBuilder.toString();
-	}
+        if (uniMatProjection != -1) {
+            float matrix[] = new float[16];
+            camera.getProjection().get(matrix);
+            glUniformMatrix4fv(uniMatProjection, false, matrix);
+        }
+        if (uniMatTransformWorld != -1) {
+            float matrix[] = new float[16];
+            camera.getTransformation().get(matrix);
+            glUniformMatrix4fv(uniMatTransformWorld, false, matrix);
+        }
+    }
+
+    public void setColor() {
+        if (uniColor != -1) {
+            System.out.println(uniColor);
+            glUniform4f(uniColor, color[0], color[1], color[2], 1);
+        }
+    }
+
+    public void setTransform(Transform transform) {
+        if (uniMatTransformObject != -1) {
+            float matrix[] = new float[16];
+            transform.getTransformation().get(matrix);
+            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
+        }
+    }
+
+    private String readSource(String file) {
+        BufferedReader reader = null;
+        StringBuilder sourceBuilder = new StringBuilder();
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                sourceBuilder.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sourceBuilder.toString();
+    }
 }
