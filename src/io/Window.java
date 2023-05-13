@@ -27,11 +27,8 @@ import org.lwjgl.opengl.GL;
 
 public class Window {
     private long window;
-    int width, height;
 
-    public Window(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public Window() {
     }
 
     /**
@@ -40,7 +37,7 @@ public class Window {
      * @param width
      * @param height
      */
-    public void createWindow(String title) {
+    public void createWindow(String title, int width, int height) {
         if (!glfwInit()) {
             throw new IllegalStateException("Failed to initialize GLFW!");
         }
