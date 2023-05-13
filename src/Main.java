@@ -12,18 +12,18 @@ import org.joml.Vector3f;
 
 import src.display.Window;
 import src.graphics.Camera;
-import src.graphics.Scene;
+import src.graphics.scene.Scene;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
 
 public class Main {
 
         public static void main(String[] args) {
-                int width = 640;
-                int height = 480;
+                int width = 960;
+                int height = 720;
 
                 Window window = new Window(width, height);
-                window.createWindow("Window");
+                window.createWindow("Rubik's Cube Simulator");
 
                 Camera sC = new Camera();
                 sC.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.001f,

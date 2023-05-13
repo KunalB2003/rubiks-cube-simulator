@@ -1,7 +1,9 @@
-package src.graphics;
+package src.graphics.scene;
 
 import java.util.HashMap;
 
+import src.graphics.Camera;
+import src.graphics.Shader;
 import src.graphics.shapes.Mesh;
 import src.graphics.transform.Transform;
 import src.graphics.transform.controller.PositionController;
