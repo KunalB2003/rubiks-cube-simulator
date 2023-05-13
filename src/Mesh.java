@@ -17,12 +17,17 @@ public class Mesh {
     public boolean create(float vertices[]) {
         vertexArrayObject = glGenVertexArrays();
         glBindVertexArray(vertexArrayObject);
-        
+
         vertexBufferObject = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
 
-    
         glBindVertexArray(0);
         return true;
+    }
+
+    public void destroy() {
+        glDeleteBuffers(vertexBufferObject);
+        glDeleteVertexArrays(vertexArrayObject);
     }
 }
