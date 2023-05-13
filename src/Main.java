@@ -1,12 +1,7 @@
 package src;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_FILL;
-import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glPolygonMode;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -14,6 +9,7 @@ import org.joml.Vector3f;
 
 import src.display.Window;
 import src.graphics.Camera;
+import src.graphics.Shader;
 import src.graphics.scene.Scene;
 import src.graphics.scene.helper.SceneHelper;
 import src.graphics.shapes.Mesh;
@@ -35,7 +31,7 @@ public class Main {
 
                 Scene scene = new Scene(c);
                 SceneHelper<Mesh> meshes = new SceneHelper<Mesh>();
-                SceneHelper<float[]> shaders = new SceneHelper<float[]>();
+                SceneHelper<Shader> shaders = new SceneHelper<Shader>();
 
                 meshes.add("tri1", new Mesh().create(new float[] {
                                 -1, -1, -1,
@@ -54,9 +50,9 @@ public class Main {
                                 1, -1, 0
                 }));
 
-                shaders.add("cyan", new float[] { 0, 1, 0.67f });
-                shaders.add("red", new float[] { 1, 0, 0 });
-                shaders.add("purple", new float[] { 0.82f, 0.0f, 1.0f });
+                shaders.add("cyan", new Shader().create(new float[] { 0, 1, 0.67f }));
+                shaders.add("red", new Shader().create(new float[] { 1, 0, 0 }));
+                shaders.add("purple", new Shader().create(new float[] { 0.82f, 0.0f, 1.0f }));
 
                 scene.registerMesh(meshes.getList());
                 scene.registerShader(shaders.getList());
@@ -68,10 +64,10 @@ public class Main {
                 while (!window.update()) {
                         glClear(GL_COLOR_BUFFER_BIT);
 
-                        //Gather objects with renderMesh
-                        //Collect into array
-                        //sort (high -> low)        
-                        //render in order
+                        // Gather objects with renderMesh
+                        // Collect into array
+                        // sort (high -> low)
+                        // render in order
 
                         scene.renderMesh("square", "purple",
                                         (t) -> {
