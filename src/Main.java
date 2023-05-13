@@ -56,6 +56,8 @@ public class Main {
                 cyan.create("cyan");
                 Shader red = new Shader();
                 red.create("red");
+                Shader purple = new Shader();
+                purple.create("purple");
 
                 Scene scene = new Scene(sceneCamera);
 
@@ -65,6 +67,7 @@ public class Main {
 
                 scene.registerShader("cyan", cyan);
                 scene.registerShader("red", red);
+                scene.registerShader("purple", purple);
 
                 float[] frame = { 0 };
                 boolean isRunning = true;
@@ -72,7 +75,7 @@ public class Main {
                         isRunning = !window.update();
                         glClear(GL_COLOR_BUFFER_BIT);
 
-                        scene.renderMesh("square", "cyan",
+                        scene.renderMesh("square", "purple",
                                         (t) -> {
                                                 t.setPosition(new Vector3f(
                                                                 (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
