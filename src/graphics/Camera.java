@@ -4,25 +4,33 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class Transform {
+public class Camera {
     private Vector3f position;
     private Quaternionf rotation;
-    private Vector3f scale;
-
-    public Transform() {
+    private Matrix4f projection;
+    
+    
+    public Camera() {
         position = new Vector3f();
         rotation = new Quaternionf();
-        scale = new Vector3f(1);
+        projection = new Matrix4f();
     }
-
+    
     public Matrix4f getTransformation() {
         Matrix4f returnValue = new Matrix4f();
 
-        returnValue.translate(position);
-        returnValue.rotate(rotation);
-        returnValue.scale(scale);
+        returnValue.rotate(rotation.conjugate(new Quaternionf()));
+        returnValue.translate(position.mul(-1, new Vector3f()));
 
         return returnValue;
+    }
+
+    public void setOrthographic(float left, float right, float top, float bottom) {
+        projection.setOrtho2D(left, right, bottom, top);
+    }
+
+    public void setPerspective(float fov, float aspectRatio, float zNear, float zFar) {
+        projection.setPerspective(fov, aspectRatio, zNear, zFar);
     }
 
     public Vector3f getPosition() {
@@ -41,11 +49,7 @@ public class Transform {
         this.rotation = rotation;
     }
 
-    public Vector3f getScale() {
-        return scale;
-    }
-
-    public void setScale(Vector3f scale) {
-        this.scale = scale;
+    public Matrix4f getProjection() {
+        return projection;
     }
 }
