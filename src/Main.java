@@ -1,10 +1,10 @@
 package src;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
 
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
+import src.graphics.Mesh;
+import src.io.Window;
 
 public class Main {
 
@@ -22,7 +22,7 @@ public class Main {
 
         boolean isRunning = true;
 
-        while (!isRunning) {
+        while (isRunning) {
             isRunning = !window.update();
 
             glClear(GL_COLOR_BUFFER_BIT);
