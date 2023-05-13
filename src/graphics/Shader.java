@@ -23,7 +23,7 @@ public class Shader {
 
         success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
-            System.err.println(glGetShaderInfoLog(vertexShader));
+            System.err.println("Vertex: \n" + glGetShaderInfoLog(vertexShader));
             return false;
         }
 
@@ -33,7 +33,7 @@ public class Shader {
 
         success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
-            System.err.println(glGetShaderInfoLog(fragmentShader));
+            System.err.println("Fragment: \n" + glGetShaderInfoLog(fragmentShader));
             return false;
         }
 
@@ -44,13 +44,13 @@ public class Shader {
         glLinkProgram(program);
         success = glGetProgrami(program, GL_LINK_STATUS);
         if (success == GL_FALSE) {
-            System.err.println(glGetProgramInfoLog(program));
+            System.err.println("Program Link: \n" + glGetProgramInfoLog(program));
             return false;
         }
         glValidateProgram(program);
         success = glGetProgrami(program, GL_VALIDATE_STATUS);
         if (success == GL_FALSE) {
-            System.err.println(glGetProgramInfoLog(program));
+            System.err.println("Program Validate: \n" + glGetProgramInfoLog(program));
             return false;
         }
 
@@ -74,49 +74,48 @@ public class Shader {
     }
 
     public void setCamera(Camera camera) {
-        if (uniMatProjection != -1) {
-            float matrix[] = new float[16];
-            camera.getProjection().get(matrix);
-            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
-        }
-        if (uniMatTransformWorld != -1) {
-            float matrix[] = new float[16];
-            camera.getTransformation().get(matrix);
-            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
-        }
-    }
-
-    public void setTransform(Transform transform) {
-        if (uniMatTransformObject != -1) {
-            float matrix[] = new float[16];
-            transform.getTransformation().get(matrix);
-            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
-        }
-    }
-
-    private String readSource(String file) {
-        BufferedReader reader = null;
-        StringBuilder sourceBuilder = new StringBuilder();
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
-
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                sourceBuilder.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return sourceBuilder.toString();
-    }
-
+		if (uniMatProjection != -1) {
+			float matrix[] = new float[16];
+			camera.getProjection().get(matrix);
+			glUniformMatrix4fv(uniMatProjection, false, matrix);
+		}
+		if (uniMatTransformWorld != -1) {
+			float matrix[] = new float[16];
+			camera.getTransformation().get(matrix);
+			glUniformMatrix4fv(uniMatTransformWorld, false, matrix);
+		}
+	}
+	
+	public void setTransform(Transform transform) {
+		if (uniMatTransformObject != -1) {
+			float matrix[] = new float[16];
+			transform.getTransformation().get(matrix);
+			glUniformMatrix4fv(uniMatTransformObject, false, matrix);
+		}
+	}
+	
+	private String readSource(String file) {
+		BufferedReader reader = null;
+		StringBuilder sourceBuilder = new StringBuilder();
+		
+		try {
+			reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
+			
+			String line;
+			
+			while ((line = reader.readLine()) != null) {
+				sourceBuilder.append(line + "\n");
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return sourceBuilder.toString();
+	}
 }
