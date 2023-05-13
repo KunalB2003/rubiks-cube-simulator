@@ -21,9 +21,12 @@ public class RenderJob {
         this.tPos = tPos;
         this.tRot = tRot;
         this.camera = camera;
-    
-    
+        this.objDist = objectDistance();
     }
 
-    // private 
+    private float objectDistance() {
+        System.out.println(mesh.getVertices());
+        
+        return 1.0f;
+    }
 }

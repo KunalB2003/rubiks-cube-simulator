@@ -33,22 +33,22 @@ public class Main {
                 SceneHelper<Mesh> meshes = new SceneHelper<Mesh>();
                 SceneHelper<Shader> shaders = new SceneHelper<Shader>();
 
-                meshes.add("tri1", new Mesh().create(new float[] {
+                meshes.add("tri1", new Mesh(new float[] {
                                 -1, -1, -1,
                                 -1, 0, -1,
                                 0, 0, -1,
-                }));
-                meshes.add("tri2", new Mesh().create(new float[] {
+                }).create());
+                meshes.add("tri2", new Mesh(new float[] {
                                 0, 0, 0,
                                 -1, -1, 0,
                                 0, -1, 0
-                }));
-                meshes.add("square", new Quad().create(new float[] {
+                }).create());
+                meshes.add("square", new Quad(new float[] {
                                 -1, -1, 0,
                                 -1, 1, 0,
                                 1, 1, 0,
                                 1, -1, 0
-                }));
+                }).create());
 
                 shaders.add("cyan", new Shader().create(new float[] { 0, 1, 0.67f }));
                 shaders.add("red", new Shader().create(new float[] { 1, 0, 0 }));
@@ -56,9 +56,6 @@ public class Main {
 
                 scene.registerMesh(meshes.getList());
                 scene.registerShader(shaders.getList());
-
-                System.out.println(scene.getMeshes());
-                System.out.println(scene.getShaders());
 
                 float[] frame = { 0 };
                 while (!window.update()) {
@@ -69,7 +66,15 @@ public class Main {
                         // sort (high -> low)
                         // render in order
 
-                        scene.renderMesh("square", "purple",
+                        // scene.renderMesh("square", "purple",
+                        // (t) -> {
+                        // t.setPosition(new Vector3f(
+                        // (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
+                        // },
+                        // (t) -> {
+                        // t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                        // });
+                        scene.queue("square", "purple",
                                         (t) -> {
                                                 t.setPosition(new Vector3f(
                                                                 (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
@@ -87,6 +92,7 @@ public class Main {
                                                 t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
                                         });
 
+                        scene.clearRenderQueue();
                         window.swapBuffers();
                         frame[0]++;
                 }

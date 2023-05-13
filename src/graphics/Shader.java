@@ -27,6 +27,7 @@ import static org.lwjgl.opengl.GL20.glValidateProgram;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import src.graphics.transform.Transform;
 
@@ -122,7 +123,6 @@ public class Shader {
 
     public void setColor() {
         if (uniColor != -1) {
-            System.out.println(uniColor);
             glUniform4f(uniColor, color[0], color[1], color[2], 1);
         }
     }
@@ -159,4 +159,9 @@ public class Shader {
 
         return sourceBuilder.toString();
     }
+
+    @Override
+    public String toString() {
+        return "Shader [color=" + Arrays.toString(color) + "]";
+    }   
 }

@@ -52,4 +52,9 @@ public class Camera {
     public Matrix4f getProjection() {
         return projection;
     }
+
+    @Override
+    public String toString() {
+        return "Camera [position=" + position + ", rotation=" + rotation + ", projection=" + projection + "]";
+    }
 }

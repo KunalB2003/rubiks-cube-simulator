@@ -23,12 +23,15 @@ public class Scene {
         shaders = new HashMap<String, Shader>();
         meshes = new HashMap<String, Mesh>();
         this.renderJobs = new ArrayList<RenderJob>();
-
         this.sceneCamera = sceneCamera;
     }
 
-    public void queue(RenderJob job) {
+    public void queue(String mesh, String shader, PositionController tPos, RotationController tRot) {
+        queue(new RenderJob(meshes.get(mesh), shaders.get(shader), tPos, tRot, sceneCamera));
+    }
 
+    public void queue(RenderJob job) {
+        
     }
 
     public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {

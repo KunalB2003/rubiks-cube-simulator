@@ -21,16 +21,16 @@ import src.graphics.transform.Transform;
 public class Mesh {
     private int vertexArrayObject;
     private int vertexBufferObject;
-
     private int vertexCount;
-
     private Transform transform;
+    private float[] vertices;
 
-    public Mesh() {
+    public Mesh(float[] vertices) {
+        this.vertices = vertices;
         transform = new Transform();
     }
 
-    public Mesh create(float vertices[]) {
+    public Mesh create() {
         vertexArrayObject = glGenVertexArrays();
         glBindVertexArray(vertexArrayObject);
 
@@ -64,5 +64,15 @@ public class Mesh {
 
     public Transform getTransform() {
         return transform;
+    }
+
+    public float[] getVertices() {
+        return vertices;
+    }
+
+    @Override
+    public String toString() {
+        return "Mesh [vertexArrayObject=" + vertexArrayObject + ", vertexBufferObject=" + vertexBufferObject
+                + ", vertexCount=" + vertexCount + ", transform=" + transform + "]";
     }
 }
