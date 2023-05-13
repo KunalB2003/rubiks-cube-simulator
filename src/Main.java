@@ -21,8 +21,8 @@ public class Main {
         public static boolean paused = false;
 
         public static void main(String[] args) {
-                int width = 960;
-                int height = 720;
+                int width = 1200;
+                int height = 800;
 
                 Window window = new Window(width, height);
                 window.createWindow("Rubik's Cube Simulator");
