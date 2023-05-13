@@ -13,7 +13,6 @@ import src.graphics.Scene;
 import src.graphics.Shader;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
-import src.graphics.transform.Transform;
 
 public class Main {
 

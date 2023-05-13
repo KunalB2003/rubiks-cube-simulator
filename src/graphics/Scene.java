@@ -3,7 +3,6 @@ package src.graphics;
 import java.util.HashMap;
 
 import src.graphics.shapes.Mesh;
-import src.graphics.transform.Modifier;
 import src.graphics.transform.PositionController;
 import src.graphics.transform.RotationController;
 import src.graphics.transform.Transform;
