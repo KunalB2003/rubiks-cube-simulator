@@ -26,7 +26,7 @@ public class Shader {
             return false;
         }
         
-        fragmentShader = glCreateShader(GL_VERTEX_SHADER);
+        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, readSource(shader + ".fs"));
         glCompileShader(fragmentShader);
         
@@ -77,7 +77,7 @@ public class Shader {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                sourceBuilder.append(line);
+                sourceBuilder.append(line + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
 import src.graphics.Mesh;
+import src.graphics.Shader;
 import src.io.Window;
 
 public class Main {
@@ -11,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         Window window = new Window();
 
-        window.createWindow(640, 480);
+        window.createWindow("Window", 640, 480);
 
         Mesh testMesh = new Mesh();
         testMesh.create(new float[] {
@@ -20,6 +21,9 @@ public class Main {
                 1, -1, 0
         });
 
+        Shader shader = new Shader();
+        shader.create("basic");
+
         boolean isRunning = true;
 
         while (isRunning) {
@@ -27,6 +31,7 @@ public class Main {
 
             glClear(GL_COLOR_BUFFER_BIT);
 
+            shader.useShader();
             testMesh.draw();
 
             window.swapBuffers();
@@ -39,6 +44,7 @@ public class Main {
         }
 
         testMesh.destroy();
+        shader.destroy();
 
         window.free();
 
