@@ -83,7 +83,7 @@ public class Main {
                                                 t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
                                         });
 
-                        scene.renderMesh("tri1", "cyan",
+                        scene.queue("tri1", "cyan",
                                         (t) -> {
                                                 t.setPosition(new Vector3f(
                                                                 (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
@@ -92,6 +92,7 @@ public class Main {
                                                 t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
                                         });
 
+                        scene.render();
                         scene.clearRenderQueue();
                         window.swapBuffers();
                         frame[0]++;

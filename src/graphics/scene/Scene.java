@@ -1,6 +1,7 @@
 package src.graphics.scene;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import src.graphics.Camera;
@@ -18,6 +19,7 @@ public class Scene {
     private HashMap<String, Mesh> meshes;
     private Camera sceneCamera;
     private ArrayList<RenderJob> renderJobs;
+    private RenderJob[] orderedJobs;
 
     public Scene(Camera sceneCamera) {
         shaders = new HashMap<String, Shader>();
@@ -31,7 +33,13 @@ public class Scene {
     }
 
     public void queue(RenderJob job) {
-        
+        renderJobs.add(job);
+    }
+
+    public void render() {
+        Arrays.sort(null, 0, 0, null);
+
+        System.out.println();
     }
 
     public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {
