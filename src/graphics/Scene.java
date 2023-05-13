@@ -3,9 +3,9 @@ package src.graphics;
 import java.util.HashMap;
 
 import src.graphics.shapes.Mesh;
-import src.graphics.transform.PositionController;
-import src.graphics.transform.RotationController;
 import src.graphics.transform.Transform;
+import src.graphics.transform.controller.PositionController;
+import src.graphics.transform.controller.RotationController;
 
 public class Scene {
 

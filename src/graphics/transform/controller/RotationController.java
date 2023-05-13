@@ -1,4 +1,6 @@
-package src.graphics.transform;
+package src.graphics.transform.controller;
+
+import src.graphics.transform.Transform;
 
 public interface RotationController {
     
