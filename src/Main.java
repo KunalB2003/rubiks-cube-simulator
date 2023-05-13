@@ -22,8 +22,8 @@ public class Main {
                 int height = 480;
 
                 Window window = new Window(width, height);
-
                 window.createWindow("Window");
+                
                 Camera sceneCamera = new Camera();
                 sceneCamera.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.01f,
                                 1000.0f);
@@ -33,18 +33,18 @@ public class Main {
                                                 new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
 
                 Mesh mesh = new Mesh();
+                Mesh mesh1 = new Mesh();
+                Quad quad = new Quad();
                 mesh.create(new float[] {
                                 -1, -1, 0,
                                 -1, 0, 0,
                                 0, 0, 0,
                 });
-                Mesh mesh1 = new Mesh();
                 mesh1.create(new float[] {
                                 0, 0, 0,
                                 -1, -1, 0,
                                 0, -1, 0
                 });
-                Quad quad = new Quad();
                 quad.create(new float[] {
                                 -1, -1, 0,
                                 -1, 1, 0,
@@ -53,10 +53,10 @@ public class Main {
                 });
 
                 Shader cyan = new Shader();
-                cyan.create("cyan");
                 Shader red = new Shader();
-                red.create("red");
                 Shader purple = new Shader();
+                cyan.create("cyan");
+                red.create("red");
                 purple.create("purple");
 
                 Scene scene = new Scene(sceneCamera);
@@ -70,9 +70,7 @@ public class Main {
                 scene.registerShader("purple", purple);
 
                 float[] frame = { 0 };
-                boolean isRunning = true;
-                while (isRunning) {
-                        isRunning = !window.update();
+                while (!window.update()) {
                         glClear(GL_COLOR_BUFFER_BIT);
 
                         scene.renderMesh("square", "purple",
