@@ -15,11 +15,11 @@ import src.io.Window;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         int width = 640;
         int height = 480;
 
-        Window window = new Window( width, height);
+        Window window = new Window(width, height);
 
         window.createWindow("Window");
 
@@ -45,21 +45,27 @@ public class Main {
 
         while (isRunning) {
             isRunning = !window.update();
+            glClear(GL_COLOR_BUFFER_BIT);
 
             x++;
             transform.setPosition(new Vector3f((float) Math.sin(Math.toRadians(x)), 0, 0));
             transform.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
 
-            glClear(GL_COLOR_BUFFER_BIT);
-
             shader.useShader();
             shader.setCamera(camera);
             shader.setTransform(transform);
+
             mesh.draw();
+
+            System.out.println(camera.getTransformation());
 
             window.swapBuffers();
 
-            Thread.sleep(1);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         mesh.destroy();
