@@ -19,9 +19,8 @@ public class Main {
         int width = 640;
         int height = 480;
 
-        Window window = new Window();
-
-        window.createWindow("Window", width, height);
+        Window window = new Window(width, height);
+        window.createWindow("Window");
 
         Mesh mesh = new Mesh();
         mesh.create(new float[] {
