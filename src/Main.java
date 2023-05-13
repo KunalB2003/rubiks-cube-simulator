@@ -9,39 +9,38 @@ import org.lwjgl.opengl.GL;
 public class Main {
 
     public static void main(String[] args) {
-        int width = 640;
-        int height = 480;
+        Window window = new Window();
 
-        if (!glfwInit()) {
-            throw new IllegalStateException("Failed to initialized GLFW.");
-        }
+        window.createWindow(640, 480);
 
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        Mesh testMesh = new Mesh();
+        testMesh.create(new float[] {
+                -1, -1, 0,
+                0, 1, 0,
+                1, -1, 0
+        });
 
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        long window = glfwCreateWindow(width, height, "Rubik's Cube Simulator", 0, 0);
-        if (window == 0) {
-            throw new IllegalStateException("Failed to create window.");
-        }
-        glfwMakeContextCurrent(window);
-        GL.createCapabilities();
+        boolean isRunning = true;
 
-        GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window, (videoMode.width() - width) / 2, (videoMode.height() - height) / 2);
-
-        glfwShowWindow(window);
-
-        while (!glfwWindowShouldClose(window)) {
-            glfwPollEvents();
+        while (!isRunning) {
+            isRunning = !window.update();
 
             glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(window);
+
+            testMesh.draw();
+
+            window.swapBuffers();
+
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        glfwTerminate();
+        testMesh.destroy();
+
+        window.free();
 
     }
 

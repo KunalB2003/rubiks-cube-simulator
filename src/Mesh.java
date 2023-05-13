@@ -21,13 +21,29 @@ public class Mesh {
         vertexBufferObject = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
         glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
         glBindVertexArray(0);
+
+        vertexCount = vertices.length / 3;
+
         return true;
     }
 
     public void destroy() {
         glDeleteBuffers(vertexBufferObject);
         glDeleteVertexArrays(vertexArrayObject);
+    }
+
+    public void draw() {
+        glBindVertexArray(vertexArrayObject);
+
+        glEnableVertexAttribArray(0);
+
+        glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+
+        glDisableVertexAttribArray(0);
+
+        glBindVertexArray(0);
     }
 }
