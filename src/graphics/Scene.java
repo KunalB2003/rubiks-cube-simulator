@@ -11,14 +11,12 @@ public class Scene {
 
     private HashMap<String, Shader> shaders;
     private HashMap<String, Mesh> meshes;
-    // private HashMap<String, Transform> transforms;
 
     private Camera sceneCamera;
 
     public Scene(Camera sceneCamera) {
         shaders = new HashMap<String, Shader>();
         meshes = new HashMap<String, Mesh>();
-        // transforms = new HashMap<String, Transform>();
 
         this.sceneCamera = sceneCamera;
     }
@@ -67,18 +65,6 @@ public class Scene {
         meshes.get(name).destroy();
         meshes.remove(name);
     }
-
-    // public HashMap<String, Transform> getTransforms() {
-        // return transforms;
-    // }
-
-    // public void registerTransform(String name, Transform transform) {
-    // transforms.put(name, transform);
-    // }
-
-    // public void removeTransform(String name) {
-    // transforms.remove(name);
-    // }
 
     public Camera getCamera() {
         return sceneCamera;
