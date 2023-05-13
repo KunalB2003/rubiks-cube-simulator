@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 
 public class Shader {
     private int vertexShader, fragmentShader, program;
+    private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject;
 
     public Shader() {
     }
@@ -25,21 +26,21 @@ public class Shader {
             System.err.println(glGetShaderInfoLog(vertexShader));
             return false;
         }
-        
+
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, readSource(shader + ".fs"));
         glCompileShader(fragmentShader);
-        
+
         success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             System.err.println(glGetShaderInfoLog(fragmentShader));
             return false;
         }
-        
+
         program = glCreateProgram();
         glAttachShader(program, vertexShader);
         glAttachShader(program, fragmentShader);
-        
+
         glLinkProgram(program);
         success = glGetProgrami(program, GL_LINK_STATUS);
         if (success == GL_FALSE) {
@@ -52,6 +53,11 @@ public class Shader {
             System.err.println(glGetProgramInfoLog(program));
             return false;
         }
+
+        uniMatProjection = glGetUniformLocation(program, "cameraProjection");
+        uniMatTransformWorld = glGetUniformLocation(program, "transformWorld");
+        uniMatTransformObject = glGetUniformLocation(program, "transformObject");
+
         return true;
     }
 
@@ -65,6 +71,27 @@ public class Shader {
 
     public void useShader() {
         glUseProgram(program);
+    }
+
+    public void setCamera(Camera camera) {
+        if (uniMatProjection != -1) {
+            float matrix[] = new float[16];
+            camera.getProjection().get(matrix);
+            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
+        }
+        if (uniMatTransformWorld != -1) {
+            float matrix[] = new float[16];
+            camera.getTransformation().get(matrix);
+            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
+        }
+    }
+
+    public void setTransform(Transform transform) {
+        if (uniMatTransformObject != -1) {
+            float matrix[] = new float[16];
+            transform.getTransformation().get(matrix);
+            glUniformMatrix4fv(uniMatTransformObject, false, matrix);
+        }
     }
 
     private String readSource(String file) {
