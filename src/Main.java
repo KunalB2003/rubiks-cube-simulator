@@ -57,8 +57,6 @@ public class Main {
 
             mesh.draw();
 
-            System.out.println(camera.getTransformation());
-
             window.swapBuffers();
 
             try {
