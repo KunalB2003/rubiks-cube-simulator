@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_gl: ^0.0.21
+  three_dart: ^0.0.16
 
 dev_dependencies:
   flutter_test:
