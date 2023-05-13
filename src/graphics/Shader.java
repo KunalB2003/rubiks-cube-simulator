@@ -27,11 +27,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.joml.Vector4f;
+
 import src.graphics.transform.Transform;
 
 public class Shader {
     private int vertexShader, fragmentShader, program;
     private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject;
+    private Vector4f uniColor;
 
     public Shader() {
     }
@@ -40,7 +43,9 @@ public class Shader {
         int success;
 
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, readSource(shader + ".vs"));
+        
+        glShaderSource(vertexShader, readSource("basic.vs"));
+        
         glCompileShader(vertexShader);
 
         success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
@@ -51,6 +56,7 @@ public class Shader {
 
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, readSource(shader + ".fs"));
+
         glCompileShader(fragmentShader);
 
         success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
