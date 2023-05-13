@@ -24,10 +24,9 @@ public class RenderJob {
         this.tRot = tRot;
         this.camera = camera;
         this.objDist = objectDistance();
-        System.out.println(objDist);
     }
 
-    private float objectDistance() {
+    public float objectDistance() {
         float[] vertices = mesh.getVertices();
         
         float xN = 0;
@@ -54,4 +53,30 @@ public class RenderJob {
 
         return (float)dist;
     }
+
+    public Mesh getMesh() {
+        return mesh;
+    }
+
+    public Shader getShader() {
+        return shader;
+    }
+
+    public PositionController gettPos() {
+        return tPos;
+    }
+
+    public RotationController gettRot() {
+        return tRot;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
+    public float getObjDist() {
+        return objDist;
+    }
+
+
 }

@@ -17,6 +17,9 @@ import src.graphics.shapes.Quad;
 
 public class Main {
 
+        public static int[] frame = { 0 };
+        public static boolean paused = false;
+
         public static void main(String[] args) {
                 int width = 960;
                 int height = 720;
@@ -34,14 +37,14 @@ public class Main {
                 SceneHelper<Shader> shaders = new SceneHelper<Shader>();
 
                 meshes.add("tri1", new Mesh(new float[] {
-                                -1, -1, -1,
-                                -1, 0, -1,
-                                0, 0, -1,
+                                1, 0, 0,
+                                0, 0, 1,
+                                -1, 0, 0,
                 }).create());
                 meshes.add("tri2", new Mesh(new float[] {
-                                0, 0, 0,
-                                -1, -1, 0,
-                                0, -1, 0
+                                0, 0, -1.5f,
+                                -1, -1, -1.5f,
+                                0, -1, -1.5f
                 }).create());
                 meshes.add("square", new Quad(new float[] {
                                 -1, -1, 0,
@@ -57,45 +60,45 @@ public class Main {
                 scene.registerMesh(meshes.getList());
                 scene.registerShader(shaders.getList());
 
-                float[] frame = { 0 };
                 while (!window.update()) {
-                        glClear(GL_COLOR_BUFFER_BIT);
+                        if (!paused) {
 
-                        // Gather objects with renderMesh
-                        // Collect into array
-                        // sort (high -> low)
-                        // render in order
+                                glClear(GL_COLOR_BUFFER_BIT);
 
-                        // scene.renderMesh("square", "purple",
-                        // (t) -> {
-                        // t.setPosition(new Vector3f(
-                        // (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
-                        // },
-                        // (t) -> {
-                        // t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
-                        // });
-                        scene.queue("square", "purple",
-                                        (t) -> {
-                                                t.setPosition(new Vector3f(
-                                                                (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
-                                        },
-                                        (t) -> {
-                                                t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
-                                        });
+                                scene.queue("square", "purple",
+                                                (t) -> {
+                                                        t.setPosition(new Vector3f(
+                                                                        (float) Math.sin(Math.toRadians(frame[0])), 0,
+                                                                        0));
+                                                },
+                                                (t) -> {
+                                                        t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                                                });
 
-                        scene.queue("tri1", "cyan",
-                                        (t) -> {
-                                                t.setPosition(new Vector3f(
-                                                                (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
-                                        },
-                                        (t) -> {
-                                                t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
-                                        });
+                                scene.queue("tri1", "cyan",
+                                                (t) -> {
+                                                        t.setPosition(new Vector3f(
+                                                                        (float) Math.sin(Math.toRadians(frame[0])), 0,
+                                                                        0));
+                                                },
+                                                (t) -> {
+                                                        t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                                                });
 
-                        scene.render();
-                        scene.clearRenderQueue();
-                        window.swapBuffers();
-                        frame[0]++;
+                                scene.queue("tri2", "red",
+                                                (t) -> {
+                                                        t.setPosition(new Vector3f(
+                                                                        (float) Math.sin(Math.toRadians(frame[0])), 0,
+                                                                        0));
+                                                },
+                                                (t) -> {
+                                                        t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                                                });
+                                scene.renderCamOrdered();
+
+                                window.swapBuffers();
+                                frame[0]++;
+                        }
                 }
 
                 scene.destroy();

@@ -3,6 +3,7 @@ package src.display;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
@@ -10,6 +11,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetKey;
+import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
@@ -24,6 +27,8 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+
+import src.Main;
 
 public class Window {
     private long window;
@@ -80,6 +85,17 @@ public class Window {
      *         True, if the window should close.
      */
     public boolean update() {
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
+            System.out.println(Main.frame[0] -= 1);
+        }
+
+        if (glfwGetMouseButton(window, 0) == 0) {
+            Main.paused = !Main.paused;
+        }
+
+
+
+
         glfwPollEvents();
 
         if (glfwWindowShouldClose(window))

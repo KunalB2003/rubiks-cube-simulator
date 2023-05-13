@@ -36,10 +36,17 @@ public class Scene {
         renderJobs.add(job);
     }
 
-    public void render() {
-        Arrays.sort(null, 0, 0, null);
-
-        System.out.println();
+    public void renderCamOrdered() {
+        orderedJobs = new RenderJob[renderJobs.size()];
+        renderJobs.toArray(orderedJobs);
+        Arrays.sort(orderedJobs, 0, orderedJobs.length, (j1, j2) -> {
+            return (int) ((j1.objectDistance() - j2.objectDistance()) * 1000);
+        });
+        for (int i = 0; i < orderedJobs.length; i++) {
+            RenderJob job = orderedJobs[i];
+            renderMesh(job.getMesh(), job.getShader(), job.gettPos(), job.gettRot());
+        }
+        clearRenderQueue();
     }
 
     public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {
