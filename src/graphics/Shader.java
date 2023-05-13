@@ -21,14 +21,50 @@ public class Shader {
         glCompileShader(vertexShader);
 
         success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
+        if (success == GL_FALSE) {
+            System.err.println(glGetShaderInfoLog(vertexShader));
+            return false;
+        }
+        
+        fragmentShader = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(fragmentShader, readSource(shader + ".fs"));
+        glCompileShader(fragmentShader);
+        
+        success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
+        if (success == GL_FALSE) {
+            System.err.println(glGetShaderInfoLog(fragmentShader));
+            return false;
+        }
+        
+        program = glCreateProgram();
+        glAttachShader(program, vertexShader);
+        glAttachShader(program, fragmentShader);
+        
+        glLinkProgram(program);
+        success = glGetProgrami(program, GL_LINK_STATUS);
+        if (success == GL_FALSE) {
+            System.err.println(glGetProgramInfoLog(program));
+            return false;
+        }
+        glValidateProgram(program);
+        success = glGetProgrami(program, GL_VALIDATE_STATUS);
+        if (success == GL_FALSE) {
+            System.err.println(glGetProgramInfoLog(program));
+            return false;
+        }
+        return true;
     }
 
     public void destroy() {
-
+        glDetachShader(program, vertexShader);
+        glDetachShader(program, fragmentShader);
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+        glDeleteShader(program);
     }
 
     public void useShader() {
-
+        glUseProgram(program);
     }
 
     private String readSource(String file) {
