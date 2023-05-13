@@ -14,93 +14,88 @@ import src.graphics.Camera;
 import src.graphics.Scene;
 import src.graphics.Shader;
 import src.graphics.Transform;
+import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
 
 public class MainCopy {
 
-    public static void main(String[] args) {
-        int width = 640;
-        int height = 480;
+        public static void main(String[] args) {
+                int width = 640;
+                int height = 480;
 
-        Window window = new Window(width, height);
+                Window window = new Window(width, height);
 
-        window.createWindow("Window");
-        Camera sceneCamera = new Camera();
-        sceneCamera.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.01f,
-                1000.0f);
-        sceneCamera.setPosition(new Vector3f(0, 1, 3));
-        sceneCamera
-                .setRotation(new Quaternionf(new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
+                window.createWindow("Window");
+                Camera sceneCamera = new Camera();
+                sceneCamera.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.01f,
+                                1000.0f);
+                sceneCamera.setPosition(new Vector3f(0, 1, 3));
+                sceneCamera
+                                .setRotation(new Quaternionf(
+                                                new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
 
-        // Mesh mesh = new Mesh();
-        // mesh.create(new float[] {
-        // -1, -1, 0,
-        // -1, 0, 0,
-        // 0, 0, 0,
-        // });
-        // Mesh mesh1 = new Mesh();
-        // mesh1.create(new float[] {
-        // 0, 0, 0,
-        // -1, -1, 0,
-        // 0, -1, 0
-        // });
+                Mesh mesh = new Mesh();
+                mesh.create(new float[] {
+                                -1, -1, 0,
+                                -1, 0, 0,
+                                0, 0, 0,
+                });
+                Mesh mesh1 = new Mesh();
+                mesh1.create(new float[] {
+                                0, 0, 0,
+                                -1, -1, 0,
+                                0, -1, 0
+                });
+                Quad quad = new Quad();
+                quad.create(new float[] {
+                                -1, -1, 0,
+                                -1, 1, 0,
+                                1, 1, 0,
+                                1, -1, 0
+                });
 
-        Quad quad = new Quad();
-        quad.create(new float[] {
-                -1, -1, 0,
-                -1, 1, 0,
-                1, 1, 0,
-                1, -1, 0
-        });
+                Shader shader = new Shader();
+                shader.create("cyan");
+                Shader shader1 = new Shader();
+                shader.create("red");
 
-        Scene scene = new Scene(sceneCamera);
+                Transform transform = new Transform();
 
-        // Mesh mesh = new Mesh();
-        // mesh.create(new float[] {
-        // -1, -1, 0,
-        // 0, 1, 0,
-        // 1, -1, 0
-        // });
+                Scene scene = new Scene(sceneCamera);
 
-        Shader shader = new Shader();
-        shader.create("cyan");
+                scene.registerMesh("triangle1", mesh);
+                scene.registerMesh("triangle2", mesh1);
+                scene.registerMesh("square", quad);
 
-        Camera camera = new Camera();
-        Transform transform = new Transform();
+                scene.registerShader("cyan", shader);
+                scene.registerShader("red", shader1);
 
-        camera.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.01f, 1000.0f);
-        camera.setPosition(new Vector3f(0, 1, 3));
-        camera.setRotation(new Quaternionf(new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
+                scene.registerTransform("spin", transform);
 
-        boolean isRunning = true;
-        float x = 0;
+                float x = 0;
+                boolean isRunning = true;
+                while (isRunning) {
+                        isRunning = !window.update();
+                        glClear(GL_COLOR_BUFFER_BIT);
 
-        while (isRunning) {
-            isRunning = !window.update();
-            glClearDepth(1.0f);
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+                        // transform.setPosition(new Vector3f((float) Math.sin(Math.toRadians(x)), 0,
+                        // 0));
+                        // transform.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
 
-            x++;
-            transform.setPosition(new Vector3f((float) Math.sin(Math.toRadians(x)), 0,
-                    0));
-            transform.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                        // shader.useShader();
 
-            shader.useShader();
-            // mesh.draw();
-            // mesh1.draw();
-            // quad.draw();
+                        // shader.setCamera(camera);
+                        // shader.setTransform(transform);
 
-            shader.setCamera(camera);
-            shader.setTransform(transform);
+                        scene.renderMesh("triangle1", "cyan", "spin");
 
-            window.swapBuffers();
+                        window.swapBuffers();
+                        x++;
+                }
+
+                scene.destroy();
+                window.free();
+
         }
-
-        // scene.destroy();
-        shader.destroy();
-        window.free();
-
-    }
 
 }

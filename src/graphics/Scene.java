@@ -20,6 +20,14 @@ public class Scene {
         this.sceneCamera = sceneCamera;
     }
 
+    public void renderMesh(String mesh, String shader, String transform) {
+        shaders.get(shader).useShader();
+        shaders.get(shader).setCamera(sceneCamera);
+        shaders.get(shader).setTransform(transform == null ? new Transform() : transforms.get(transform));
+
+        meshes.get(mesh).draw();
+    }
+
     public HashMap<String, Shader> getShaders() {
         return shaders;
     }
