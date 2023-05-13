@@ -13,7 +13,7 @@ import src.graphics.Scene;
 import src.graphics.Shader;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
-import src.graphics.transform.Modifier;
+import src.graphics.transform.Transform;
 
 public class Main {
 
@@ -71,15 +71,6 @@ public class Main {
                 while (isRunning) {
                         isRunning = !window.update();
                         glClear(GL_COLOR_BUFFER_BIT);
-
-                        // transform.setPosition(new Vector3f((float) Math.sin(Math.toRadians(x)), 0,
-                        // 0));
-                        // transform.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
-
-                        // shader.useShader();
-
-                        // shader.setCamera(camera);
-                        // shader.setTransform(transform);
 
                         scene.renderMesh("square", "cyan",
                                         (t) -> {

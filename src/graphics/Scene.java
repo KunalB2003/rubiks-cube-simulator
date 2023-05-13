@@ -25,18 +25,22 @@ public class Scene {
     }
 
     public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {
-        Transform transform = new Transform();
+        renderMesh(meshes.get(mesh), shaders.get(shader), tPos, tRot);
+    }
+
+    public void renderMesh(Mesh mesh, Shader shader, PositionController tPos, RotationController tRot) {
+        Transform transform = mesh.getTransform();
         if (tPos != null) {
             tPos.changePosition(transform);
         }
         if (tRot != null) {
             tRot.changeRotation(transform);
         }
-        shaders.get(shader).setTransform(transform);
-        shaders.get(shader).useShader();
-        shaders.get(shader).setCamera(sceneCamera);
-        
-        meshes.get(mesh).draw();
+        shader.useShader();
+        shader.setCamera(sceneCamera);
+        shader.setTransform(transform);
+
+        mesh.draw();
     }
 
     public HashMap<String, Shader> getShaders() {
@@ -65,9 +69,9 @@ public class Scene {
         meshes.remove(name);
     }
 
-    public HashMap<String, Transform> getTransforms() {
+    // public HashMap<String, Transform> getTransforms() {
         // return transforms;
-    }
+    // }
 
     // public void registerTransform(String name, Transform transform) {
     // transforms.put(name, transform);

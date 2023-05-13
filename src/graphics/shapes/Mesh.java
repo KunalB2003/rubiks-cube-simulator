@@ -16,13 +16,18 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
+import src.graphics.transform.Transform;
+
 public class Mesh {
     private int vertexArrayObject;
     private int vertexBufferObject;
 
     private int vertexCount;
 
+    private Transform transform;
+
     public Mesh() {
+        transform = new Transform();
     }
 
     public boolean create(float vertices[]) {
@@ -56,5 +61,9 @@ public class Mesh {
         glDisableVertexAttribArray(0);
 
         glBindVertexArray(0);
+    }
+
+    public Transform getTransform() {
+        return transform;
     }
 }
