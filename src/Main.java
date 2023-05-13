@@ -1,10 +1,7 @@
 package src;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glDisable;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -25,13 +22,13 @@ public class Main {
                 Window window = new Window(width, height);
                 window.createWindow("Window");
 
-                Camera sC = new Camera();
-                sC.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.001f,
+                Camera c = new Camera();
+                c.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.001f,
                                 1000.0f);
-                sC.setPosition(new Vector3f(0, 1, 3));
-                sC.setRotation(new Quaternionf(new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
+                c.setPosition(new Vector3f(0, 1, 3));
+                c.setRotation(new Quaternionf(new AxisAngle4f((float) Math.toRadians(-30), new Vector3f(1, 0, 0))));
 
-                Scene scene = new Scene(sC);
+                Scene scene = new Scene(c);
 
                 scene.registerMesh("triangle1", new Mesh().create(new float[] {
                                 -1, -1, 1,
