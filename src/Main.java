@@ -2,8 +2,6 @@ package src;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glClearDepth;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -13,9 +11,9 @@ import src.display.Window;
 import src.graphics.Camera;
 import src.graphics.Scene;
 import src.graphics.Shader;
-import src.graphics.Transform;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
+import src.graphics.transform.Modifier;
 
 public class Main {
 
@@ -54,12 +52,10 @@ public class Main {
                                 1, -1, 0
                 });
 
-                Shader shader = new Shader();
-                shader.create("cyan");
-                Shader shader1 = new Shader();
-                shader.create("red");
-
-                Transform transform = new Transform();
+                Shader cyan = new Shader();
+                cyan.create("cyan");
+                Shader red = new Shader();
+                red.create("red");
 
                 Scene scene = new Scene(sceneCamera);
 
@@ -67,12 +63,10 @@ public class Main {
                 scene.registerMesh("triangle2", mesh1);
                 scene.registerMesh("square", quad);
 
-                scene.registerShader("cyan", shader);
-                scene.registerShader("red", shader1);
+                scene.registerShader("cyan", cyan);
+                scene.registerShader("red", red);
 
-                scene.registerTransform("spin", transform);
-
-                float x = 0;
+                float[] frame = { 0 };
                 boolean isRunning = true;
                 while (isRunning) {
                         isRunning = !window.update();
@@ -87,10 +81,17 @@ public class Main {
                         // shader.setCamera(camera);
                         // shader.setTransform(transform);
 
-                        scene.renderMesh("triangle1", "cyan", "spin");
+                        scene.renderMesh("square", "cyan",
+                                        (t) -> {
+                                                t.setPosition(new Vector3f(
+                                                                (float) Math.sin(Math.toRadians(frame[0])), 0, 0));
+                                        },
+                                        (t) -> {
+                                                t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
+                                        });
 
                         window.swapBuffers();
-                        x++;
+                        frame[0]++;
                 }
 
                 scene.destroy();

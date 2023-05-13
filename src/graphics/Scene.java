@@ -3,28 +3,39 @@ package src.graphics;
 import java.util.HashMap;
 
 import src.graphics.shapes.Mesh;
+import src.graphics.transform.Modifier;
+import src.graphics.transform.PositionController;
+import src.graphics.transform.RotationController;
+import src.graphics.transform.Transform;
 
 public class Scene {
 
     private HashMap<String, Shader> shaders;
     private HashMap<String, Mesh> meshes;
-    private HashMap<String, Transform> transforms;
+    // private HashMap<String, Transform> transforms;
 
     private Camera sceneCamera;
 
     public Scene(Camera sceneCamera) {
         shaders = new HashMap<String, Shader>();
         meshes = new HashMap<String, Mesh>();
-        transforms = new HashMap<String, Transform>();
+        // transforms = new HashMap<String, Transform>();
 
         this.sceneCamera = sceneCamera;
     }
 
-    public void renderMesh(String mesh, String shader, String transform) {
+    public void renderMesh(String mesh, String shader, PositionController tPos, RotationController tRot) {
+        Transform transform = new Transform();
+        if (tPos != null) {
+            tPos.changePosition(transform);
+        }
+        if (tRot != null) {
+            tRot.changeRotation(transform);
+        }
+        shaders.get(shader).setTransform(transform);
         shaders.get(shader).useShader();
         shaders.get(shader).setCamera(sceneCamera);
-        shaders.get(shader).setTransform(transform == null ? new Transform() : transforms.get(transform));
-
+        
         meshes.get(mesh).draw();
     }
 
@@ -55,16 +66,16 @@ public class Scene {
     }
 
     public HashMap<String, Transform> getTransforms() {
-        return transforms;
+        // return transforms;
     }
 
-    public void registerTransform(String name, Transform transform) {
-        transforms.put(name, transform);
-    }
+    // public void registerTransform(String name, Transform transform) {
+    // transforms.put(name, transform);
+    // }
 
-    public void removeTransform(String name) {
-        transforms.remove(name);
-    }
+    // public void removeTransform(String name) {
+    // transforms.remove(name);
+    // }
 
     public Camera getCamera() {
         return sceneCamera;

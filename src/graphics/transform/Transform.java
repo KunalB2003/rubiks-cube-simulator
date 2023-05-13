@@ -1,4 +1,4 @@
-package src.graphics;
+package src.graphics.transform;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;

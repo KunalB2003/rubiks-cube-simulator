@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import src.graphics.transform.Transform;
+
 public class Shader {
     private int vertexShader, fragmentShader, program;
     private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject;
