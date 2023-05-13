@@ -6,6 +6,7 @@ import java.util.HashMap;
 import src.graphics.Camera;
 import src.graphics.Shader;
 import src.graphics.scene.helper.Pair;
+import src.graphics.scene.render.RenderJob;
 import src.graphics.shapes.Mesh;
 import src.graphics.transform.Transform;
 import src.graphics.transform.controller.PositionController;
@@ -15,12 +16,13 @@ public class Scene {
 
     private HashMap<String, Shader> shaders;
     private HashMap<String, Mesh> meshes;
-
     private Camera sceneCamera;
+    private ArrayList<RenderJob> renderJobs;
 
     public Scene(Camera sceneCamera) {
         shaders = new HashMap<String, Shader>();
         meshes = new HashMap<String, Mesh>();
+        this.renderJobs = new ArrayList<RenderJob>();
 
         this.sceneCamera = sceneCamera;
     }
@@ -50,7 +52,7 @@ public class Scene {
     }
 
     // public void registerShader(String name, float[] color) {
-    //     shaders.put(name, new Shader().create(color));
+    // shaders.put(name, new Shader().create(color));
     // }
     public void registerShader(ArrayList<Pair<String, float[]>> shaderList) {
         shaderList.forEach((p) -> {
@@ -93,5 +95,9 @@ public class Scene {
         meshes.forEach((name, mesh) -> {
             mesh.destroy();
         });
+    }
+
+    public void clearRenderQueue() {
+        renderJobs.clear();
     }
 }

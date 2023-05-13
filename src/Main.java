@@ -68,6 +68,11 @@ public class Main {
                 while (!window.update()) {
                         glClear(GL_COLOR_BUFFER_BIT);
 
+                        //Gather objects with renderMesh
+                        //Collect into array
+                        //sort (high -> low)        
+                        //render in order
+
                         scene.renderMesh("square", "purple",
                                         (t) -> {
                                                 t.setPosition(new Vector3f(
