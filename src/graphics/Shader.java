@@ -34,7 +34,6 @@ import src.graphics.transform.Transform;
 public class Shader {
     private int vertexShader, fragmentShader, program;
     private int uniMatProjection, uniMatTransformWorld, uniMatTransformObject;
-    private Vector4f uniColor;
 
     public Shader() {
     }
