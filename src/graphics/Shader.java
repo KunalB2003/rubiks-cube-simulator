@@ -27,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.joml.Vector4f;
+
 import src.graphics.transform.Transform;
 
 public class Shader {
