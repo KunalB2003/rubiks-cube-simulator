@@ -1,7 +1,27 @@
 package src.graphics;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glDeleteShader;
+import static org.lwjgl.opengl.GL20.glDetachShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +36,7 @@ public class Shader {
     public Shader() {
     }
 
-    public boolean create(String shader) {
+    public Shader create(String shader) {
         int success;
 
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -26,7 +46,7 @@ public class Shader {
         success = glGetShaderi(vertexShader, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             System.err.println("Vertex: \n" + glGetShaderInfoLog(vertexShader));
-            return false;
+            return null;
         }
 
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -36,7 +56,7 @@ public class Shader {
         success = glGetShaderi(fragmentShader, GL_COMPILE_STATUS);
         if (success == GL_FALSE) {
             System.err.println("Fragment: \n" + glGetShaderInfoLog(fragmentShader));
-            return false;
+            return null;
         }
 
         program = glCreateProgram();
@@ -47,20 +67,20 @@ public class Shader {
         success = glGetProgrami(program, GL_LINK_STATUS);
         if (success == GL_FALSE) {
             System.err.println("Program Link: \n" + glGetProgramInfoLog(program));
-            return false;
+            return null;
         }
         glValidateProgram(program);
         success = glGetProgrami(program, GL_VALIDATE_STATUS);
         if (success == GL_FALSE) {
             System.err.println("Program Validate: \n" + glGetProgramInfoLog(program));
-            return false;
+            return null;
         }
 
         uniMatProjection = glGetUniformLocation(program, "cameraProjection");
         uniMatTransformWorld = glGetUniformLocation(program, "transformWorld");
         uniMatTransformObject = glGetUniformLocation(program, "transformObject");
 
-        return true;
+        return this;
     }
 
     public void destroy() {

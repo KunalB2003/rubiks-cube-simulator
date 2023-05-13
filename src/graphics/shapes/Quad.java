@@ -11,7 +11,7 @@ public class Quad extends Mesh {
     }
 
     @Override
-    public boolean create(float v[]) {
+    public Quad create(float v[]) {
         if (v.length != 12) {
             throw new IllegalArgumentException("Requires 12 coordinates.");
         }
@@ -27,7 +27,7 @@ public class Quad extends Mesh {
                 v[0], v[1], v[2]
         });
 
-        return true;
+        return this;
     }
 
     @Override

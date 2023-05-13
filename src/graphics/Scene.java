@@ -44,8 +44,8 @@ public class Scene {
         return shaders;
     }
 
-    public void registerShader(String name, Shader shader) {
-        shaders.put(name, shader);
+    public void registerShader(String name) {
+        shaders.put(name, new Shader().create(name));
     }
 
     public void removeShader(String name) {

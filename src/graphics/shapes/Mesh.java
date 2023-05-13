@@ -30,7 +30,7 @@ public class Mesh {
         transform = new Transform();
     }
 
-    public boolean create(float vertices[]) {
+    public Mesh create(float vertices[]) {
         vertexArrayObject = glGenVertexArrays();
         glBindVertexArray(vertexArrayObject);
 
@@ -43,7 +43,7 @@ public class Mesh {
 
         vertexCount = vertices.length / 3;
 
-        return true;
+        return this;
     }
 
     public void destroy() {

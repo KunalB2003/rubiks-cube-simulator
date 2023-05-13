@@ -10,7 +10,6 @@ import org.joml.Vector3f;
 import src.display.Window;
 import src.graphics.Camera;
 import src.graphics.Scene;
-import src.graphics.Shader;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
 
@@ -22,7 +21,7 @@ public class Main {
 
                 Window window = new Window(width, height);
                 window.createWindow("Window");
-                
+
                 Camera sceneCamera = new Camera();
                 sceneCamera.setPerspective((float) Math.toRadians(70), (float) ((width * 1.0) / (height * 1.0)), 0.01f,
                                 1000.0f);
@@ -51,22 +50,31 @@ public class Main {
                                 1, -1, 0
                 });
 
-                Shader cyan = new Shader();
-                Shader red = new Shader();
-                Shader purple = new Shader();
-                cyan.create("cyan");
-                red.create("red");
-                purple.create("purple");
+                // Shader cyan = new Shader();
+                // Shader red = new Shader();
+                // Shader purple = new Shader();
+                // cyan.create("cyan");
+                // red.create("red");
+                // purple.create("purple");
 
                 Scene scene = new Scene(sceneCamera);
 
                 scene.registerMesh("triangle1", mesh);
-                scene.registerMesh("triangle2", mesh1);
-                scene.registerMesh("square", quad);
+                scene.registerMesh("triangle2", new Mesh().create(new float[] {
+                                0, 0, 0,
+                                -1, -1, 0,
+                                0, -1, 0
+                }));
+                scene.registerMesh("square", new Quad().create(new float[] {
+                                -1, -1, 0,
+                                -1, 1, 0,
+                                1, 1, 0,
+                                1, -1, 0
+                }));
 
-                scene.registerShader("cyan", cyan);
-                scene.registerShader("red", red);
-                scene.registerShader("purple", purple);
+                scene.registerShader("cyan");
+                scene.registerShader("red");
+                scene.registerShader("purple");
 
                 float[] frame = { 0 };
                 while (!window.update()) {
