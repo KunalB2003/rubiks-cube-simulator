@@ -188,21 +188,19 @@ class _MainAppState extends State<MainApp> {
 
     int t1 = DateTime.now().millisecondsSinceEpoch;
 
-    if (kDebugMode) {
-      if (verbose) {
-        print("render cost: ${t1 - t} ");
-        print(renderer!.info.memory);
-        print(renderer!.info.render);
-      }
+    if (verbose) {
+      print("render cost: ${t1 - t} ");
+      print(renderer!.info.memory);
+      print(renderer!.info.render);
     }
 
     gl.flush();
 
-    if (verbose) {
-      if (kDebugMode) {
-        print(" render: sourceTexture: $sourceTexture ");
-      }
-    }
+    // var pixels = _gl.readCurrentPixels(0, 0, 10, 10);
+    // print(" --------------pixels............. ");
+    // print(pixels);
+
+    if (verbose) print(" render: sourceTexture: $sourceTexture ");
 
     if (!kIsWeb) {
       three3dRender.updateTexture(sourceTexture);
@@ -248,6 +246,8 @@ class _MainAppState extends State<MainApp> {
 
     scene = three.Scene();
 
+    //
+
     camera = three.PerspectiveCamera(50, 0.5 * aspect, 1, 10000);
     camera.position.z = 2500;
 
@@ -256,6 +256,7 @@ class _MainAppState extends State<MainApp> {
     cameraPerspectiveHelper = three.CameraHelper(cameraPerspective);
     scene.add(cameraPerspectiveHelper);
 
+    //
     cameraOrtho = three.OrthographicCamera(
         0.5 * frustumSize * aspect / -2,
         0.5 * frustumSize * aspect / 2,
@@ -267,8 +268,12 @@ class _MainAppState extends State<MainApp> {
     cameraOrthoHelper = three.CameraHelper(cameraOrtho);
     scene.add(cameraOrthoHelper);
 
+    //
+
     activeCamera = cameraPerspective;
     activeHelper = cameraPerspectiveHelper;
+
+    // counteract different front orientation of cameras vs rig
 
     cameraOrtho.rotation.y = three.Math.pi;
     cameraPerspective.rotation.y = three.Math.pi;
@@ -279,6 +284,8 @@ class _MainAppState extends State<MainApp> {
     cameraRig.add(cameraOrtho);
 
     scene.add(cameraRig);
+
+    //
 
     mesh = three.Mesh(three.SphereGeometry(100, 16, 8),
         three.MeshBasicMaterial({"color": 0xffffff, "wireframe": true}));
@@ -293,6 +300,8 @@ class _MainAppState extends State<MainApp> {
         three.MeshBasicMaterial({"color": 0x0000ff, "wireframe": true}));
     mesh3.position.z = 150;
     cameraRig.add(mesh3);
+
+    //
 
     var geometry = three.BufferGeometry();
     List<double> vertices = [];
@@ -327,9 +336,7 @@ class _MainAppState extends State<MainApp> {
 
   @override
   void dispose() {
-    if (kDebugMode) {
-      print(" dispose ............. ");
-    }
+    print(" dispose ............. ");
 
     disposed = true;
     three3dRender.dispose();
