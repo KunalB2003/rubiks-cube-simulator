@@ -1,9 +1,11 @@
 package src.graphics.scene;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import src.graphics.Camera;
 import src.graphics.Shader;
+import src.graphics.scene.helper.Pair;
 import src.graphics.shapes.Mesh;
 import src.graphics.transform.Transform;
 import src.graphics.transform.controller.PositionController;
@@ -47,8 +49,13 @@ public class Scene {
         return shaders;
     }
 
-    public void registerShader(String name, float[] color) {
-        shaders.put(name, new Shader().create(color));
+    // public void registerShader(String name, float[] color) {
+    //     shaders.put(name, new Shader().create(color));
+    // }
+    public void registerShader(ArrayList<Pair<String, float[]>> shaderList) {
+        shaderList.forEach((p) -> {
+            shaders.put(p.first, new Shader().create(p.second));
+        });
     }
 
     public void removeShader(String name) {
@@ -60,8 +67,13 @@ public class Scene {
         return meshes;
     }
 
-    public void registerMesh(String name, Mesh mesh) {
-        meshes.put(name, mesh);
+    // public void registerMesh(String name, Mesh mesh) {
+    // meshes.put(name, mesh);
+    // }
+    public void registerMesh(ArrayList<Pair<String, Mesh>> meshList) {
+        meshList.forEach((p) -> {
+            meshes.put(p.first, p.second);
+        });
     }
 
     public void removeMesh(String name) {

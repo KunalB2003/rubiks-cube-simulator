@@ -140,7 +140,7 @@ public class Shader {
         StringBuilder sourceBuilder = new StringBuilder();
 
         try {
-            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/" + file)));
+            reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/shaders/basic/" + file)));
 
             String line;
 
