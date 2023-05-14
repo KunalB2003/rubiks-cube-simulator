@@ -9,19 +9,28 @@ public enum Face {
 
     private final int val;
     private final String str;
-    private static final Map<String, Face> mMap = Collections.unmodifiableMap(initializeMapping());
+    public static final Map<Integer, Face> intMap = Collections.unmodifiableMap(initializeIntMapping());
+    public static final Map<String, Face> strMap = Collections.unmodifiableMap(initializeStringMapping());
 
     private Face(int val, String str) {
         this.val = val;
         this.str = str;
     }
 
-    private static Map<String, Face> initializeMapping() {
-        Map<String, Face> faceMap = new HashMap<String, Face>();
+    private static Map<Integer, Face> initializeIntMapping() {
+        Map<Integer, Face> intMap = new HashMap<Integer, Face>();
         for (Face f : Face.values()) {
-            faceMap.put(f.str, f);
+            intMap.put(f.val, f);
         }
-        return faceMap;
+        return intMap;
+    }
+
+    private static Map<String, Face> initializeStringMapping() {
+        Map<String, Face> strMap = new HashMap<String, Face>();
+        for (Face f : Face.values()) {
+            strMap.put(f.str, f);
+        }
+        return strMap;
     }
 
     public int getVal() {
