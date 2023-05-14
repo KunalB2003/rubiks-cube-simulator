@@ -1,6 +1,7 @@
 package src.cube.solver;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -55,24 +56,37 @@ public class Solver {
 
         queue.add(new Node(initialState, 0, heuristic(initialState), null, null));
 
-        while(!queue.isEmpty()) {
-            
-        }
+        int counter = 0;
+        while (!queue.isEmpty()) {
+            Node currentNode = queue.poll();
 
+            int curF = currentNode.costToReach;
+            int curG = currentNode.estimatedCostToGoal;
+
+            if (Arrays.deepEquals(currentNode.state, endState)) {
+                System.out.println("sol found");
+                return null;
+            }
+            for (int i = 0; i < moveList.length; i++) {
+                int[][] nextStates = Cube.nextStatesFromStates(currentNode.state, moveList[i]);
+                int costToReach = currentNode.costToReach + 1;
+                int estimatedCostToGoal = heuristic(nextStates);
+                Move move = moveList[i];
+
+                Node queueEntry = new Node(nextStates, costToReach, estimatedCostToGoal, currentNode, move);
+
+                if (!queue.contains(queueEntry)) {
+                    queue.add(queueEntry);
+                }
+
+            }
+
+            counter++;
+            if (counter % 10 == 0) {
+                System.out.println(counter + " " + queue.size() + " " + curF + " " + curG);
+            }
+        }
         return null;
     }
-    // solve algorithm (list<Move> return)
-    // create priority queue
-    // sort by total cost
-    // heuristic cost + moves to get there
-    // add start state of cube to queue
-    // while queue isn't empty
-    // take queue#poll value
-    // check if value deep= end state in which case return
-    // for each value from successor states
-    // create a new node
-    // add node to queue
-    // if while loop ends
-    // return null
 
 }
