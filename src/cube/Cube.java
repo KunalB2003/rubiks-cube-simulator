@@ -1,4 +1,4 @@
-package src.solver.cube;
+package src.cube;
 
 import java.util.List;
 import java.util.Random;

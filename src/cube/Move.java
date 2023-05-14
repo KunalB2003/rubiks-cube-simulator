@@ -1,4 +1,4 @@
-package src.solver.cube;
+package src.cube;
 
 public class Move {
     protected Face face;
