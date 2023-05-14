@@ -48,7 +48,14 @@ public class Cube {
 
     private static final Map<String, Face> faceMap = Map.of("F", FRONT, "B", BACK, "U", UP, "D", DOWN, "L", LEFT, "R",
             RIGHT);
-    private static final int[][] shuffleData = { { 1, 2, 4, 3, 1, 2, 3, 0 }, {2, 0, 3, 5, 3, 3, 3, 1}, {0, 1, 5, 4, 0, 0, 0, 0}, {}};
+    private static final int[][] shuffleData = {
+            { 1, 2, 4, 3, 1, 2, 3, 0 },
+            { 2, 0, 3, 5, 3, 3, 3, 1 },
+            { 0, 1, 5, 4, 0, 0, 0, 0 },
+            { 0, 1, 5, 4, 2, 2, 2, 2 },
+            { 0, 2, 5, 4, 1, 1, 3, 1 },
+            { 1, 3, 4, 2, 3, 2, 1, 0 }
+    };
     private int[][] states;
 
     public Cube() {
@@ -57,12 +64,15 @@ public class Cube {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Cube());
         Scanner s = new Scanner(System.in);
+        Cube c = new Cube();
+        System.out.println(c);
 
         while (s.hasNextLine()) {
             String in = s.nextLine();
             System.out.println(in + ": " + faceMap.get(in));
+            c.move(faceMap.get(in), 1);
+            System.out.println(c);
         }
 
         s.close();
@@ -80,55 +90,6 @@ public class Cube {
     public void move(Face f, int direction) { // 1=>cwise 2=>double 3=ccwise
         for (int i = 0; i < direction; i++) {
             rotateFace(f);
-            switch (f) {
-                case UP:
-                    /**
-                     * 
-                     * 2 clockwise
-                     * top row: 1 0 4 5 left
-                     */
-                    break;
-                case DOWN:
-                    /**
-                     * 3 clockwise
-                     * bottom row: 1 0 4 5 right
-                     */
-                    break;
-                case LEFT:
-                    /**
-                     * 1 clockwise
-                     * left column : 2 0 3 down
-                     * right column 5 up
-                     */
-                    break;
-                case RIGHT:
-                    /**
-                     * 4 clockwise
-                     * right column: 3 0 2 up
-                     * left column: 5 down
-                     */
-                    break;
-                case FRONT:
-                    /**
-                     * 0 clockwise
-                     * left column: 4 down
-                     * right column: 1 up
-                     * top row: 3 left
-                     * bottom row: 2 right
-                     */
-                    break;
-                case BACK:
-                    /**
-                     * 5 clockwise
-                     * left column: 1 down
-                     * right column: 4 up
-                     * top row: 2 left
-                     * bottom row: 3 right
-                     */
-                    break;
-                default:
-                    throw new IllegalArgumentException("Incorrect face inputted.");
-            }
         }
     }
 
@@ -140,50 +101,42 @@ public class Cube {
         }
         states[f.getVal()][0] = temp1;
         states[f.getVal()][1] = temp2;
-    }
 
-    private void shuffle3(Face f) {
         int fval = f.getVal();
         int[] data = shuffleData[fval];
         int t1 = states[data[0]][data[4] * 2];
         int t2 = states[data[0]][data[4] * 2 + 1];
-        int t3 = states[data[0]][(data[4] * 2 + 2)%8];
-        for (int i = 1; i < 4; i++) {   
-            states[data[i]][data[4+i]*2] = states[data[i-1]][data[4+i-1] * 2];
-            states[data[i]][data[4+i]*2+1] = states[data[i-1]][data[4+i-1] * 2+1];
-            states[data[i]][(data[4+i]*2+2)%8] = states[data[i-1]][(data[4+i-1] * 2+2)%8];
+        int t3 = states[data[0]][(data[4] * 2 + 2) % 8];
+        for (int i = 1; i < 4; i++) {
+            states[data[i]][data[4 + i] * 2] = states[data[i - 1]][data[4 + i - 1] * 2];
+            states[data[i]][data[4 + i] * 2 + 1] = states[data[i - 1]][data[4 + i - 1] * 2 + 1];
+            states[data[i]][(data[4 + i] * 2 + 2) % 8] = states[data[i - 1]][(data[4 + i - 1] * 2 + 2) % 8];
         }
-        states[data[3]][data[7]*2] = t1;
-        states[data[3]][data[7]*2+1] = t2;
-        states[data[3]][(data[7]*2+2)%8] = t3;
-
+        states[data[3]][data[7] * 2] = t1;
+        states[data[3]][data[7] * 2 + 1] = t2;
+        states[data[3]][(data[7] * 2 + 2) % 8] = t3;
     }
 
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
         StringBuilder[] builders = new StringBuilder[] {
-            new StringBuilder(),
-            new StringBuilder(),
-            new StringBuilder()
+                new StringBuilder(),
+                new StringBuilder(),
+                new StringBuilder()
         };
 
-        printEmpty(builders);
-        printFace(builders, 2);
-
-        tripleLineBreak(out, builders);
-
-        printFace(builders, 1);
-        printFace(builders, 0);
-        printFace(builders, 4);
-        printFace(builders, 5);
-
-        tripleLineBreak(out, builders);
-
-        printEmpty(builders);
-        printFace(builders, 3);
-
-        tripleLineBreak(out, builders);
+        printEmpty(builders);                
+        printFace(builders, 2);             
+        tripleLineBreak(out, builders);     
+        printFace(builders, 1);             
+        printFace(builders, 0);              
+        printFace(builders, 4);             
+        printFace(builders, 5);             
+        tripleLineBreak(out, builders);     
+        printEmpty(builders);               
+        printFace(builders, 3);             
+        tripleLineBreak(out, builders);     
 
         return out.toString();
     }
@@ -208,9 +161,9 @@ public class Cube {
 
     private void printFace(StringBuilder[] builders, int face) {
         IntStream.rangeClosed(0, 2).forEach((i) -> {
-            builders[1].append(states[face][i]);
-            builders[3].append(states[face][7 - i]);
+            builders[0].append(states[face][i]);
+            builders[2].append(states[face][7 - i]);
         });
-        builders[2].append("" + states[face][7] + face + states[face][3]);
+        builders[1].append("" + states[face][7] + face + states[face][3]);
     }
 }
