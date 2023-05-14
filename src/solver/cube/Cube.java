@@ -23,46 +23,32 @@ public class Cube {
         }
 
         public Face getFace(String in) {
-            switch (in) {
-                case "D":
+            switch (in.toLowerCase()) {
+                case "d":
                     return DOWN;
-                case "U":
+                case "u":
                     return UP;
-                case "F":
+                case "f":
                     return FRONT;
-                case "B":
+                case "b":
                     return BACK;
-                case "L":
+                case "l":
                     return LEFT;
-                case "R":
+                case "r":
                     return RIGHT;
                 default:
                     return null;
             }
-
         }
 
         public int getVal() {
             return val;
         }
-
-        public enum Side {
-            TOP(0), BOTTOM(2), LEFT(3), RIGHT(1);
-
-            private final int val;
-
-            private Side(int val) {
-                this.val = val;
-            }
-
-            public int getVal() {
-                return val;
-            }
-        }
     }
 
     private static final Map<String, Face> faceMap = Map.of("F", FRONT, "B", BACK, "U", UP, "D", DOWN, "L", LEFT, "R",
             RIGHT);
+    private static final int[][] shuffleData = { { 1, 2, 4, 3, 1, 2, 3, 0 }, {2, 0, 3, 5, 3, 3, 3, 1}, {0, 1, 5, 4, 0, 0, 0, 0}, {}};
     private int[][] states;
 
     public Cube() {
@@ -79,6 +65,7 @@ public class Cube {
             System.out.println(in + ": " + faceMap.get(in));
         }
 
+        s.close();
     }
 
     private void instantiateCube() {
@@ -90,7 +77,7 @@ public class Cube {
         }
     }
 
-    public void move(Face f, int direction) { // 1, 2, 3
+    public void move(Face f, int direction) { // 1=>cwise 2=>double 3=ccwise
         for (int i = 0; i < direction; i++) {
             rotateFace(f);
             switch (f) {
@@ -116,7 +103,7 @@ public class Cube {
                     break;
                 case RIGHT:
                     /**
-                     * 3 clockwise
+                     * 4 clockwise
                      * right column: 3 0 2 up
                      * left column: 5 down
                      */
@@ -131,6 +118,13 @@ public class Cube {
                      */
                     break;
                 case BACK:
+                    /**
+                     * 5 clockwise
+                     * left column: 1 down
+                     * right column: 4 up
+                     * top row: 2 left
+                     * bottom row: 3 right
+                     */
                     break;
                 default:
                     throw new IllegalArgumentException("Incorrect face inputted.");
@@ -148,69 +142,75 @@ public class Cube {
         states[f.getVal()][1] = temp2;
     }
 
-    private void shuffle3(Face f1, Face f2, Face f3, Face f4, Face.Side s1, Face.Side s2, Face.Side s3, Face.Side s4) {
-        
+    private void shuffle3(Face f) {
+        int fval = f.getVal();
+        int[] data = shuffleData[fval];
+        int t1 = states[data[0]][data[4] * 2];
+        int t2 = states[data[0]][data[4] * 2 + 1];
+        int t3 = states[data[0]][(data[4] * 2 + 2)%8];
+        for (int i = 1; i < 4; i++) {   
+            states[data[i]][data[4+i]*2] = states[data[i-1]][data[4+i-1] * 2];
+            states[data[i]][data[4+i]*2+1] = states[data[i-1]][data[4+i-1] * 2+1];
+            states[data[i]][(data[4+i]*2+2)%8] = states[data[i-1]][(data[4+i-1] * 2+2)%8];
+        }
+        states[data[3]][data[7]*2] = t1;
+        states[data[3]][data[7]*2+1] = t2;
+        states[data[3]][(data[7]*2+2)%8] = t3;
+
     }
 
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
-        StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
-        StringBuilder sb3 = new StringBuilder();
+        StringBuilder[] builders = new StringBuilder[] {
+            new StringBuilder(),
+            new StringBuilder(),
+            new StringBuilder()
+        };
 
-        printEmpty(sb1, sb2, sb3);
-        printFace(sb1, sb2, sb3, 2);
+        printEmpty(builders);
+        printFace(builders, 2);
 
-        out.append(sb1);
-        out.append('\n');
-        out.append(sb2);
-        out.append('\n');
-        out.append(sb3);
-        out.append('\n');
-        sb1 = new StringBuilder();
-        sb2 = new StringBuilder();
-        sb3 = new StringBuilder();
+        tripleLineBreak(out, builders);
 
-        printFace(sb1, sb2, sb3, 1);
-        printFace(sb1, sb2, sb3, 0);
-        printFace(sb1, sb2, sb3, 4);
-        printFace(sb1, sb2, sb3, 5);
+        printFace(builders, 1);
+        printFace(builders, 0);
+        printFace(builders, 4);
+        printFace(builders, 5);
 
-        out.append(sb1);
-        out.append('\n');
-        out.append(sb2);
-        out.append('\n');
-        out.append(sb3);
-        out.append('\n');
-        sb1 = new StringBuilder();
-        sb2 = new StringBuilder();
-        sb3 = new StringBuilder();
+        tripleLineBreak(out, builders);
 
-        printEmpty(sb1, sb2, sb3);
-        printFace(sb1, sb2, sb3, 3);
+        printEmpty(builders);
+        printFace(builders, 3);
 
-        out.append(sb1);
-        out.append('\n');
-        out.append(sb2);
-        out.append('\n');
-        out.append(sb3);
-        out.append('\n');
+        tripleLineBreak(out, builders);
 
         return out.toString();
     }
 
-    private void printEmpty(StringBuilder sb1, StringBuilder sb2, StringBuilder sb3) {
-        sb1.append("   ");
-        sb2.append("   ");
-        sb3.append("   ");
+    private void tripleLineBreak(StringBuilder out, StringBuilder[] builders) {
+        out.append(builders[0]);
+        out.append('\n');
+        out.append(builders[1]);
+        out.append('\n');
+        out.append(builders[2]);
+        out.append('\n');
+        builders[0] = new StringBuilder();
+        builders[1] = new StringBuilder();
+        builders[2] = new StringBuilder();
     }
 
-    private void printFace(StringBuilder sb1, StringBuilder sb2, StringBuilder sb3, int face) {
+    private void printEmpty(StringBuilder[] builders) {
+        builders[0].append("   ");
+        builders[1].append("   ");
+        builders[2].append("   ");
+    }
+
+    private void printFace(StringBuilder[] builders, int face) {
         IntStream.rangeClosed(0, 2).forEach((i) -> {
-            sb1.append(states[face][i]);
-            sb3.append(states[face][7 - i]);
+            builders[1].append(states[face][i]);
+            builders[3].append(states[face][7 - i]);
         });
-        sb2.append("" + states[face][7] + face + states[face][3]);
+        builders[2].append("" + states[face][7] + face + states[face][3]);
     }
 }
