@@ -1,50 +1,20 @@
 package src.solver.cube;
 
-import static src.solver.cube.Cube.Face.BACK;
-import static src.solver.cube.Cube.Face.DOWN;
-import static src.solver.cube.Cube.Face.FRONT;
-import static src.solver.cube.Cube.Face.LEFT;
-import static src.solver.cube.Cube.Face.RIGHT;
-import static src.solver.cube.Cube.Face.UP;
+import static src.solver.cube.Face.BACK;
+import static src.solver.cube.Face.DOWN;
+import static src.solver.cube.Face.FRONT;
+import static src.solver.cube.Face.LEFT;
+import static src.solver.cube.Face.RIGHT;
+import static src.solver.cube.Face.UP;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Cube {
-
-    public enum Face {
-        DOWN(3), UP(2), FRONT(0), BACK(5), LEFT(1), RIGHT(4);
-
-        private final int val;
-
-        private Face(int val) {
-            this.val = val;
-        }
-
-        public Face getFace(String in) {
-            switch (in.toLowerCase()) {
-                case "d":
-                    return DOWN;
-                case "u":
-                    return UP;
-                case "f":
-                    return FRONT;
-                case "b":
-                    return BACK;
-                case "l":
-                    return LEFT;
-                case "r":
-                    return RIGHT;
-                default:
-                    return null;
-            }
-        }
-
-        public int getVal() {
-            return val;
-        }
-    }
 
     private static final Map<String, Face> faceMap = Map.of("F", FRONT, "B", BACK, "U", UP, "D", DOWN, "L", LEFT, "R",
             RIGHT);
@@ -75,9 +45,12 @@ public class Cube {
                 c = new Cube();
                 System.out.println(c);
                 continue;
+            } else if (in.equals("scramble")) {
+                int moves = s.nextInt();
+                c.scramble(moves);
             }
 
-            Face f = faceMap.get(in);
+            Face f = faceMap.get(Character.toString(in.toUpperCase().charAt(0)));
             System.out.println(in + ": " + f);
             if (f == null) {
                 continue;
@@ -98,10 +71,33 @@ public class Cube {
         }
     }
 
+    public void scramble(int moves) {
+        Random r = new Random();
+        for (int i = 0; i < moves; i++) {
+            IntStream
+                    .iterate(r.nextInt(6), t -> {
+                        int j;
+                        do {
+                            j = r.nextInt(6);
+                        } while (t == j);
+                        return j;
+                    })
+                    .limit(moves)
+                    .map(t -> new Pair(faceMap.values()[t], r.nextInt(3)));
+        }
+    }
+
     public void move(Face f, int direction) { // 1=>cwise 2=>double 3=ccwise
         for (int i = 0; i < direction; i++) {
             rotateFace(f);
         }
+    }
+
+    public String moveToString(Face f, int direction) {
+        // return faceMap.
+        // wip
+
+        return "wingo cringe";
     }
 
     private void rotateFace(Face f) {

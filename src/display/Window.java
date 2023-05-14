@@ -93,9 +93,6 @@ public class Window {
             Main.paused = !Main.paused;
         }
 
-
-
-
         glfwPollEvents();
 
         if (glfwWindowShouldClose(window))
