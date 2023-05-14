@@ -6,8 +6,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import src.cube.solver.Solver;
-
 public class Cube {
 
     private static final int[][][] shuffleData = {
@@ -47,11 +45,6 @@ public class Cube {
                 System.out.println(c.scramble(moves).stream().map(Move::toString).collect(Collectors.joining(" ")));
                 System.out.println(c);
                 continue;
-            } else if (in.equals("solve")) {
-                Solver solver = new Solver(c);
-                solver.solveCube();
-                c = new Cube();
-                continue;
             }
 
             Face f = Face.strMap.get(Character.toString(in.toUpperCase().charAt(0)));
@@ -75,12 +68,7 @@ public class Cube {
     }
 
     private void createCube(int[][] states) {
-        this.states = new int[6][8];
-        for (int i = 0; i < states.length; i++) {
-            for (int j = 0; j < states[i].length; j++) {
-                this.states[i][j] = states[i][j];
-            }
-        }
+        this.states = states;
     }
 
     public List<Move> scramble(int moves) {
@@ -102,7 +90,7 @@ public class Cube {
     }
 
     public int[][] move(Move m) { // 1=>cwise 2=>double 3=ccwise
-        for (int i = 0; i < m.numMoves; i++) {
+        for (int i = 0; i < m.num; i++) {
             rotateFace(m.face);
         }
 

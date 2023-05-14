@@ -33,11 +33,6 @@ public enum Face {
         return strMap;
     }
 
-    @Override
-    public String toString() {
-        return "Face[" + str + " " + val + "]";
-    }
-
     public int getVal() {
         return val;
     }
