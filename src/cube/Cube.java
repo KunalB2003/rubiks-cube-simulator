@@ -20,7 +20,11 @@ public class Cube {
     private int[][] states;
 
     public Cube() {
-        instantiateCube();
+        createCube();
+    }
+
+    public Cube(int[][] states) {
+        createCube(states);
     }
 
     // Chat based cube interface
@@ -54,13 +58,17 @@ public class Cube {
         s.close();
     }
 
-    private void instantiateCube() {
-        states = new int[6][8];
+    private void createCube() {
+        this.states = new int[6][8];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                states[i][j] = i;
+                this.states[i][j] = i;
             }
         }
+    }
+
+    private void createCube(int[][] states) {
+        this.states = states;
     }
 
     public List<Move> scramble(int moves) {
@@ -81,10 +89,12 @@ public class Cube {
         return out;
     }
 
-    public void move(Move m) { // 1=>cwise 2=>double 3=ccwise
+    public int[][] move(Move m) { // 1=>cwise 2=>double 3=ccwise
         for (int i = 0; i < m.num; i++) {
             rotateFace(m.face);
         }
+
+        return states;
     }
 
     private int[][] rotateFace(Face f) {
@@ -112,6 +122,13 @@ public class Cube {
         states[faceData[0]][(sideData[0] * 2 + 2) % 8] = t3;
 
         return states;
+    }
+
+    public static int[][] nextStatesFromStates(int[][] states, Move m) {
+        int[][] nextState = new int[6][8];
+        
+        Cube c = new Cube(states);
+        return c.move(m);
     }
 
     @Override
