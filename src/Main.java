@@ -21,8 +21,8 @@ public class Main {
         public static boolean paused = false;
 
         public static void main(String[] args) {
-                int width = 1200;
-                int height = 800;
+                int width = 1600;
+                int height = 900;
 
                 Window window = new Window(width, height);
                 window.createWindow("Rubik's Cube Simulator");
@@ -62,7 +62,6 @@ public class Main {
 
                 while (!window.update()) {
                         if (!paused) {
-
                                 glClear(GL_COLOR_BUFFER_BIT);
 
                                 scene.queue("square", "purple",
@@ -94,16 +93,14 @@ public class Main {
                                                 (t) -> {
                                                         t.getRotation().rotateAxis((float) Math.toRadians(1), 0, 1, 0);
                                                 });
-                                scene.renderCamOrdered();
 
+                                scene.renderCamOrdered();
                                 window.swapBuffers();
                                 frame[0]++;
                         }
                 }
-
                 scene.destroy();
                 window.free();
-
         }
 
 }
