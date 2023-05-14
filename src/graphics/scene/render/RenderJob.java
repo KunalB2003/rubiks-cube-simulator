@@ -1,7 +1,5 @@
 package src.graphics.scene.render;
 
-import org.lwjgl.system.linux.XNoExposeEvent;
-
 import src.graphics.Camera;
 import src.graphics.Shader;
 import src.graphics.shapes.Mesh;

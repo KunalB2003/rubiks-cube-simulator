@@ -23,6 +23,7 @@ public class Cube {
         instantiateCube();
     }
 
+    // Chat based cube interface
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
         Cube c = new Cube();
@@ -86,7 +87,7 @@ public class Cube {
         }
     }
 
-    private void rotateFace(Face f) {
+    private int[][] rotateFace(Face f) {
         int temp1 = states[f.getVal()][6];
         int temp2 = states[f.getVal()][7];
         for (int i = 7; i > 1; i--) {
@@ -109,6 +110,8 @@ public class Cube {
         states[faceData[0]][sideData[0] * 2] = t1;
         states[faceData[0]][sideData[0] * 2 + 1] = t2;
         states[faceData[0]][(sideData[0] * 2 + 2) % 8] = t3;
+
+        return states;
     }
 
     @Override
@@ -169,5 +172,9 @@ public class Cube {
                 builders[i].append("|");
             }
         }
+    }
+
+    public int[][] getStates() {
+        return states;
     }
 }
