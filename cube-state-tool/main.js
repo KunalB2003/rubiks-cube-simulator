@@ -11,7 +11,7 @@ window.onload = () => {
 
     for (let i = 0; i < 3; i++) {
         for (let i2 = 0; i2 < 3; i2++) {
-
+            
             for (let j = 0; j < 4; j++) {
                 for (let j2 = 0; j2 < 3; j2++) {
                     let e = document.createElement("button");
@@ -76,9 +76,6 @@ window.onload = () => {
                     e.innerHTML = text;
                     e.classList.add(c1, c2);
                 }
-
-
-                
             }
 
             let el = document.createElement("br");
