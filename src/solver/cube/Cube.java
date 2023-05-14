@@ -8,8 +8,6 @@ import java.util.stream.IntStream;
 
 public class Cube {
 
-        
-
     private static final int[][][] shuffleData = {
             { { 1, 2, 4, 3 }, { 1, 2, 3, 0 } },
             { { 2, 0, 3, 5 }, { 3, 3, 3, 1 } },
@@ -52,7 +50,6 @@ public class Cube {
             c.move(new Move(f, 1));
             System.out.println(c);
         }
-
         s.close();
     }
 
@@ -120,25 +117,28 @@ public class Cube {
         StringBuilder[] builders = new StringBuilder[] {
                 new StringBuilder(),
                 new StringBuilder(),
-                new StringBuilder()
+                new StringBuilder(),
+                new StringBuilder(),
         };
 
-        printEmpty(builders);
-        printFace(builders, 2);
-        tripleLineBreak(out, builders);
-        printFace(builders, 1);
-        printFace(builders, 0);
-        printFace(builders, 4);
-        printFace(builders, 5);
-        tripleLineBreak(out, builders);
-        printEmpty(builders);
-        printFace(builders, 3);
-        tripleLineBreak(out, builders);
+        printEmpty(builders, false, false);
+        printFace(builders, 2, true);
+        LineBreak(out, builders);
+        printFace(builders, 1, false);
+        printFace(builders, 0, false);
+        printFace(builders, 4, false);
+        printFace(builders, 5, true);
+        LineBreak(out, builders);
+        printEmpty(builders, true, true);
+        printFace(builders, 3, true);
+        printEmpty(builders, true, false);
+        printEmpty(builders, true, false);
+        LineBreak(out, builders);
 
-        return out.toString();
+        return out.toString() + "    *---*";
     }
 
-    private void tripleLineBreak(StringBuilder out, StringBuilder[] builders) {
+    private void LineBreak(StringBuilder out, StringBuilder[] builders) {
         for (int i = 0; i < builders.length; i++) {
             out.append(builders[i]);
             out.append('\n');
@@ -146,17 +146,28 @@ public class Cube {
         }
     }
 
-    private void printEmpty(StringBuilder[] builders) {
-        builders[0].append("   ");
-        builders[1].append("   ");
-        builders[2].append("   ");
+    private void printEmpty(StringBuilder[] builders, boolean bottom, boolean anchorLeft) {
+        builders[0].append(bottom ? (anchorLeft ? "*---" : "---*") : "    ");
+        builders[1].append("    ");
+        builders[2].append("    ");
+        builders[3].append("    ");
     }
 
-    private void printFace(StringBuilder[] builders, int face) {
+    private void printFace(StringBuilder[] builders, int face, boolean last) {
+        builders[0].append("*---");
+        for (int i = 1; i < builders.length; i++) {
+            builders[i].append("|");
+        }
         IntStream.rangeClosed(0, 2).forEach((i) -> {
-            builders[0].append(states[face][i]);
-            builders[2].append(states[face][6 - i]);
+            builders[1].append(states[face][i]);
+            builders[3].append(states[face][6 - i]);
         });
-        builders[1].append("" + states[face][7] + face + states[face][3]);
+        builders[2].append("" + states[face][7] + face + states[face][3]);
+        if (last) {
+            builders[0].append("*");
+            for (int i = 1; i < builders.length; i++) {
+                builders[i].append("|");
+            }
+        }
     }
 }
