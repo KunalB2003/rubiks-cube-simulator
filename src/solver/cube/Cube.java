@@ -48,14 +48,16 @@ public class Cube {
 
     private static final Map<String, Face> faceMap = Map.of("F", FRONT, "B", BACK, "U", UP, "D", DOWN, "L", LEFT, "R",
             RIGHT);
-    private static final int[][] shuffleData = {
-            { 1, 2, 4, 3, 1, 2, 3, 0 },
-            { 2, 0, 3, 5, 3, 3, 3, 1 },
-            { 0, 1, 5, 4, 0, 0, 0, 0 },
-            { 0, 1, 5, 4, 2, 2, 2, 2 },
-            { 0, 2, 5, 4, 1, 1, 3, 1 },
-            { 1, 3, 4, 2, 3, 2, 1, 0 }
+
+    private static final int[][][] shuffleData = {
+            { { 1, 2, 4, 3 }, { 1, 2, 3, 0 } },
+            { { 2, 0, 3, 5 }, { 3, 3, 3, 1 } },
+            { { 0, 1, 5, 4 }, { 0, 0, 0, 0 } },
+            { { 1, 0, 4, 5 }, { 2, 2, 2, 2 } },
+            { { 0, 2, 5, 4 }, { 1, 1, 3, 1 } },
+            { { 1, 3, 4, 2 }, { 3, 2, 1, 0 } }
     };
+
     private int[][] states;
 
     public Cube() {
@@ -112,32 +114,21 @@ public class Cube {
         states[f.getVal()][1] = temp2;
 
         int fval = f.getVal();
-        int[] data = shuffleData[fval];
-        int t1 = states[data[3]][data[7] * 2];
-        int t2 = states[data[3]][data[7] * 2 + 1];
-        int t3 = states[data[3]][(data[7] * 2 + 2) % 8];
+        int[] faceData = shuffleData[fval][0];
+        int[] sideData = shuffleData[fval][1];
+        int t1 = states[faceData[3]][sideData[3] * 2];
+        int t2 = states[faceData[3]][sideData[3] * 2 + 1];
+        int t3 = states[faceData[3]][(sideData[3] * 2 + 2) % 8];
         for (int i = 3; i > 0; i--) {
-            states[data[i]][data[4 + i] * 2] = states[data[i - 1]][data[4 + i - 1] * 2];
-            states[data[i]][data[4 + i] * 2 + 1] = states[data[i - 1]][data[4 + i - 1] * 2 + 1];
-            states[data[i]][(data[4 + i] * 2 + 2) % 8] = states[data[i - 1]][(data[4 + i - 1] * 2 + 2) % 8];
+            states[faceData[i]][sideData[i] * 2] = states[faceData[i - 1]][sideData[i - 1] * 2];
+            states[faceData[i]][sideData[i] * 2 + 1] = states[faceData[i - 1]][sideData[i - 1] * 2 + 1];
+            states[faceData[i]][(sideData[i] * 2 + 2) % 8] = states[faceData[i - 1]][(sideData[i - 1] * 2 + 2) % 8];
         }
-        states[data[0]][data[4] * 2] = t1;
-        states[data[0]][data[4] * 2 + 1] = t2;
-        states[data[0]][(data[4] * 2 + 2) % 8] = t3;
+        states[faceData[0]][sideData[0] * 2] = t1;
+        states[faceData[0]][sideData[0] * 2 + 1] = t2;
+        states[faceData[0]][(sideData[0] * 2 + 2) % 8] = t3;
     }
 
-    /**
-     *    222
-     *    222
-     *    222
-     * 111000444555
-     * 111000444555
-     * 111000444555
-     *    333
-     *    333
-     *    333
-     *  
-     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
