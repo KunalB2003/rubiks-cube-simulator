@@ -60,7 +60,6 @@ public class Cube {
 
     public Cube() {
         instantiateCube();
-        toString();
     }
 
     public static void main(String[] args) {
@@ -70,8 +69,18 @@ public class Cube {
 
         while (s.hasNextLine()) {
             String in = s.nextLine();
-            System.out.println(in + ": " + faceMap.get(in));
-            c.move(faceMap.get(in), 1);
+            if (in.equals("reset")) {
+                c = new Cube();
+                System.out.println(c);
+                continue;
+            }
+
+            Face f = faceMap.get(in);
+            System.out.println(in + ": " + f);
+            if (f == null) {
+                continue;
+            }
+            c.move(f, 1);
             System.out.println(c);
         }
 
@@ -82,7 +91,7 @@ public class Cube {
         states = new int[6][8];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                states[i][j] = i;
+                states[i][j] = j;
             }
         }
     }
@@ -104,19 +113,31 @@ public class Cube {
 
         int fval = f.getVal();
         int[] data = shuffleData[fval];
-        int t1 = states[data[0]][data[4] * 2];
-        int t2 = states[data[0]][data[4] * 2 + 1];
-        int t3 = states[data[0]][(data[4] * 2 + 2) % 8];
+        int t1 = states[data[3]][data[7] * 2];
+        int t2 = states[data[3]][data[7] * 2 + 1];
+        int t3 = states[data[3]][(data[7] * 2 + 2) % 8];
         for (int i = 1; i < 4; i++) {
             states[data[i]][data[4 + i] * 2] = states[data[i - 1]][data[4 + i - 1] * 2];
             states[data[i]][data[4 + i] * 2 + 1] = states[data[i - 1]][data[4 + i - 1] * 2 + 1];
             states[data[i]][(data[4 + i] * 2 + 2) % 8] = states[data[i - 1]][(data[4 + i - 1] * 2 + 2) % 8];
         }
-        states[data[3]][data[7] * 2] = t1;
-        states[data[3]][data[7] * 2 + 1] = t2;
-        states[data[3]][(data[7] * 2 + 2) % 8] = t3;
+        states[data[0]][data[4] * 2] = t1;
+        states[data[0]][data[4] * 2 + 1] = t2;
+        states[data[0]][(data[4] * 2 + 2) % 8] = t3;
     }
 
+    /**
+     *    222
+     *    222
+     *    222
+     * 111000444555
+     * 111000444555
+     * 111000444555
+     *    333
+     *    333
+     *    333
+     *  
+     */
     @Override
     public String toString() {
         StringBuilder out = new StringBuilder();
@@ -126,17 +147,17 @@ public class Cube {
                 new StringBuilder()
         };
 
-        printEmpty(builders);                
-        printFace(builders, 2);             
-        tripleLineBreak(out, builders);     
-        printFace(builders, 1);             
-        printFace(builders, 0);              
-        printFace(builders, 4);             
-        printFace(builders, 5);             
-        tripleLineBreak(out, builders);     
-        printEmpty(builders);               
-        printFace(builders, 3);             
-        tripleLineBreak(out, builders);     
+        printEmpty(builders);
+        printFace(builders, 2);
+        tripleLineBreak(out, builders);
+        printFace(builders, 1);
+        printFace(builders, 0);
+        printFace(builders, 4);
+        printFace(builders, 5);
+        tripleLineBreak(out, builders);
+        printEmpty(builders);
+        printFace(builders, 3);
+        tripleLineBreak(out, builders);
 
         return out.toString();
     }
