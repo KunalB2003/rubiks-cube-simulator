@@ -91,7 +91,7 @@ public class Cube {
         states = new int[6][8];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                states[i][j] = j;
+                states[i][j] = i;
             }
         }
     }
@@ -105,7 +105,7 @@ public class Cube {
     private void rotateFace(Face f) {
         int temp1 = states[f.getVal()][6];
         int temp2 = states[f.getVal()][7];
-        for (int i = 2; i < 8; i++) {
+        for (int i = 7; i > 1; i--) {
             states[f.getVal()][i] = states[f.getVal()][i - 2];
         }
         states[f.getVal()][0] = temp1;
@@ -116,7 +116,7 @@ public class Cube {
         int t1 = states[data[3]][data[7] * 2];
         int t2 = states[data[3]][data[7] * 2 + 1];
         int t3 = states[data[3]][(data[7] * 2 + 2) % 8];
-        for (int i = 1; i < 4; i++) {
+        for (int i = 3; i > 0; i--) {
             states[data[i]][data[4 + i] * 2] = states[data[i - 1]][data[4 + i - 1] * 2];
             states[data[i]][data[4 + i] * 2 + 1] = states[data[i - 1]][data[4 + i - 1] * 2 + 1];
             states[data[i]][(data[4 + i] * 2 + 2) % 8] = states[data[i - 1]][(data[4 + i - 1] * 2 + 2) % 8];
@@ -163,15 +163,11 @@ public class Cube {
     }
 
     private void tripleLineBreak(StringBuilder out, StringBuilder[] builders) {
-        out.append(builders[0]);
-        out.append('\n');
-        out.append(builders[1]);
-        out.append('\n');
-        out.append(builders[2]);
-        out.append('\n');
-        builders[0] = new StringBuilder();
-        builders[1] = new StringBuilder();
-        builders[2] = new StringBuilder();
+        for (int i = 0; i < builders.length; i++) {
+            out.append(builders[i]);
+            out.append('\n');
+            builders[i] = new StringBuilder();
+        }
     }
 
     private void printEmpty(StringBuilder[] builders) {
@@ -183,7 +179,7 @@ public class Cube {
     private void printFace(StringBuilder[] builders, int face) {
         IntStream.rangeClosed(0, 2).forEach((i) -> {
             builders[0].append(states[face][i]);
-            builders[2].append(states[face][7 - i]);
+            builders[2].append(states[face][6 - i]);
         });
         builders[1].append("" + states[face][7] + face + states[face][3]);
     }
