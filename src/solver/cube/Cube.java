@@ -1,30 +1,68 @@
 package src.solver.cube;
 
+import static src.solver.cube.Cube.Face.BACK;
+import static src.solver.cube.Cube.Face.DOWN;
+import static src.solver.cube.Cube.Face.FRONT;
+import static src.solver.cube.Cube.Face.LEFT;
+import static src.solver.cube.Cube.Face.RIGHT;
+import static src.solver.cube.Cube.Face.UP;
+
+import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Cube {
 
     public enum Face {
         DOWN(3), UP(2), FRONT(0), BACK(5), LEFT(1), RIGHT(4);
-        private final int val ;
+
+        private final int val;
+
         private Face(int val) {
             this.val = val;
         }
+
+        public Face getFace(String in) {
+            switch (in) {
+                case "D":
+                    return DOWN;
+                case "U":
+                    return UP;
+                case "F":
+                    return FRONT;
+                case "B":
+                    return BACK;
+                case "L":
+                    return LEFT;
+                case "R":
+                    return RIGHT;
+                default:
+                    return null;
+            }
+
+        }
+
         public int getVal() {
             return val;
         }
 
         public enum Side {
-            TOP(0), BOTTOM(2), LEFT(3), RIGHT(1); 
+            TOP(0), BOTTOM(2), LEFT(3), RIGHT(1);
+
             private final int val;
+
             private Side(int val) {
                 this.val = val;
             }
+
             public int getVal() {
                 return val;
             }
         }
     }
+
+    private static final Map<String, Face> faceMap = Map.of("F", FRONT, "B", BACK, "U", UP, "D", DOWN, "L", LEFT, "R",
+            RIGHT);
     private int[][] states;
 
     public Cube() {
@@ -34,6 +72,12 @@ public class Cube {
 
     public static void main(String[] args) {
         System.out.println(new Cube());
+        Scanner s = new Scanner(System.in);
+
+        while (s.hasNextLine()) {
+            String in = s.nextLine();
+            System.out.println(in + ": " + faceMap.get(in));
+        }
 
     }
 
@@ -95,16 +139,17 @@ public class Cube {
     }
 
     private void rotateFace(Face f) {
-        int corner = states[f.getVal()][0];
-        int edge = states[f.getVal()][1];
-        for (int i = 0; i < 6; i++) {
-            states[f.getVal()][i + 2] = states[f.getVal()][i];
+        int temp1 = states[f.getVal()][6];
+        int temp2 = states[f.getVal()][7];
+        for (int i = 2; i < 8; i++) {
+            states[f.getVal()][i] = states[f.getVal()][i - 2];
         }
-
+        states[f.getVal()][0] = temp1;
+        states[f.getVal()][1] = temp2;
     }
-    
-    private void shuffle3() {
-        🤡
+
+    private void shuffle3(Face f1, Face f2, Face f3, Face f4, Face.Side s1, Face.Side s2, Face.Side s3, Face.Side s4) {
+        
     }
 
     @Override
