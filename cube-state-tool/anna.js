@@ -11,7 +11,7 @@ window.onload = () => {
     const buttonsPerFace = 9;
     const textNodeChildren = document.getElementById('text').children;
     const clockwise = [0, 1, 2, 7, null, 3, 6, 5, 4];
-    
+
     for (let i = 0; i < order.length; i++) {
         let face = document.createElement('div');
         face.className = 'face';
@@ -28,11 +28,7 @@ window.onload = () => {
                 if (j != 4) {
                     let beforeText = textNodeChildren[ithFace].innerText;
                     let numbers = beforeText.split(',');
-                    if (j > 2) {
-                        numbers[clockwise[j]] = newNum;
-                    } else {
-                        numbers[j] = newNum;
-                    }
+                    numbers[clockwise[j]] = newNum;
                     textNodeChildren[ithFace].innerText = numbers.join(',');
                 }
             });
