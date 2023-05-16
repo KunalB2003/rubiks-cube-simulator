@@ -1,81 +1,59 @@
 package src.cube.solver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.Stack;
+import java.util.stream.Stream;
 
 import src.cube.Cube;
 import src.cube.Move;
 
 public class Solver {
 
-    private int[][] initialState, endState;
+    //private int[][] initialState, endState;
+    private Cube initialCube, endCube;
+
     private Move[] moveList;
 
     public Solver(Cube cube) {
-        this.initialState = cube.getStates();
-        this.endState = new int[6][8];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.endState[i][j] = i;
-            }
-        }
+        this.initialCube = cube;
+        endCube = new Cube();
         this.moveList = Move.allMoves();
     }
 
-    private int heuristic(int[][] state) {
-        int incorrectPositions = 0;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (state[i][j] != endState[i][j]) {
-                    incorrectPositions++;
-                }
-            }
-        }
-        return incorrectPositions;
-    }
-
-    private ArrayList<int[][]> getNextStates(int[][] state) {
-        ArrayList<int[][]> nextStates = new ArrayList<int[][]>();
-
-        for (Move m : moveList) {
-            nextStates.add(Cube.nextStatesFromStates(state, m));
-        }
-
-        return nextStates;
-    }
-
     public ArrayList<Move> solveCube() {
-        PriorityQueue<Node> queue = new PriorityQueue<Node>(new Comparator<Node>() {
-            @Override
-            public int compare(Node n1, Node n2) {
-                return n1.getTotalCost() - n2.getTotalCost();
-            }
-        });
+        PriorityQueue<Node> queue = new PriorityQueue<Node>();
+        Set<Node> visited = new HashSet<Node>();
 
-        queue.add(new Node(initialState, 0, heuristic(initialState), null, null));
+        queue.add(new Node(initialCube, endCube));
 
         int counter = 0;
         while (!queue.isEmpty()) {
             Node currentNode = queue.poll();
+            visited.add(currentNode);
 
             int curF = currentNode.costToReach;
             int curG = currentNode.estimatedCostToGoal;
 
-            if (Arrays.deepEquals(currentNode.state, endState)) {
+            if (currentNode.cube.equals(endCube)) {
                 System.out.println("sol found");
+                Stack<Node> stack = new Stack<Node>();
+                Stream
+                    .iterate(currentNode, n -> n.parent != null, n -> n.parent)
+                    .forEach(stack::add);
+                while (!stack.empty()) {
+                    System.out.print(stack.pop().lastMove + " ");
+                }
                 return null;
             }
             for (int i = 0; i < moveList.length; i++) {
-                int[][] nextStates = Cube.nextStatesFromStates(currentNode.state, moveList[i]);
-                int costToReach = currentNode.costToReach + 1;
-                int estimatedCostToGoal = heuristic(nextStates);
                 Move move = moveList[i];
 
-                Node queueEntry = new Node(nextStates, costToReach, estimatedCostToGoal, currentNode, move);
+                Node queueEntry = new Node(currentNode, move, endCube);
 
-                if (!queue.contains(queueEntry)) {
+                if (!queue.contains(queueEntry) && !visited.contains(queueEntry)) {
                     queue.add(queueEntry);
                 }
 
