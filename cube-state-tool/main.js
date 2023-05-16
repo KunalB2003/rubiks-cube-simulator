@@ -1,13 +1,14 @@
-var states = [];
 window.onload = () => {
-    
+
+    var states = [];
+
     for (let i = 0; i < 6; i++) {
         states.push([]);
         for (let j = 0; j < 8; j++) {
             states[i][j] = i;
         }
     }
-    
+
     let c1;
     let c2;
 
@@ -75,8 +76,8 @@ window.onload = () => {
                     }
                     e.innerHTML = text;
                     e.addEventListener("click", () => {
-                        e.innerText = incrementNum(parseInt(e.innerText));
-                        updateOutput(getArrayIndex1(e.classList[0]), getArrayIndex2(e.classList[1]));
+                        console.log("Click");
+                        incrementNum(parseInt(e.innerText));
                     });
                     e.classList.add(c1, c2);
                 }
@@ -108,64 +109,10 @@ window.onload = () => {
 
 
     let out = document.createElement("p");
-    out.id = "out";
     out.innerText = outText;
     document.body.appendChild(out);
 }
 
 function incrementNum(num) {
     return (num + 1) % 6;
-}
-
-function updateOutput(c1, c2) {
-    let out = document.getElementById("out");
-
-    let outText = "";
-    outText += "{\n";
-    for (let i = 0; i < 6; i++) {
-        outText += "{";
-        for (let j = 0; j < 8; j++) {
-            outText += states[c1][c2];
-            if (j != 7) {
-                outText += ", ";
-            }
-        }
-        outText += "}";
-        if (i != 5) {
-            outText += ",\n";
-        }
-    }
-    outText += "\n}";
-
-    out.innerText = outText;
-
-    console.log(out.innerText);
-    console.log(outText);
-}
-
-function getArrayIndex1(c1) {
-    return parseInt(c1.substring(1, 2));
-}
-
-function getArrayIndex2(c2) {
-    switch (parseInt(c2.substring(1, 2))) {
-        case (0):
-            return 0;
-        case (1):
-            return 1;
-        case (2):
-            return 2;
-        case (3):
-            return 5;
-        case (4):
-            return 8;
-        case (5):
-            return 7;
-        case (6):
-            return 6;
-        case (7):
-            return 4;
-        case (8):
-            return 5;
-    }
 }
