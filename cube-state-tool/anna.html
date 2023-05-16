@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="anna.js"></script>
+</head>
+<style>
+    html, body {
+        width: 100%;
+        margin: 0;
+        background-image: url('seal.jpg');
+        background-size: cover;
+        background-color: black;
+    }
+    button {
+        width: 4vw;
+        height: 4vw;
+        margin: 0;
+        transition-duration: 0.1s;
+        font-size: 1.2vw;
+    }
+    .face {
+        width: 12vw;
+        height: 12vw;
+        margin: auto;
+        display: inline-block;
+    }
+    #faces {
+        position: absolute;
+        top: 12vw;
+    }
+    #cube {
+        margin: auto;
+        top: 10vh;
+        position: relative;
+        width: 48vw;
+        height: 36vw;
+    }
+    #text {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        font-size: 1.2vw;
+        color: blue;
+        background-color: white;
+        padding: 1vw;
+        border-radius: 1.2vw;
+    }
+    #top, #bottom {
+        position: absolute;
+        left: 12vw;
+    }
+    #top {
+        top: 0;
+    }
+    #bottom {
+        top: 24vw;
+    }
+</style>
+<body>
+    <div id="text">
+        {
+            {<p>0, 0, 0, 0, 0, 0, 0, 0</p>},
+            {<p>1, 1, 1, 1, 1, 1, 1, 1</p>},
+            {<p>2, 2, 2, 2, 2, 2, 2, 2</p>},
+            {<p>3, 3, 3, 3, 3, 3, 3, 3</p>},
+            {<p>4, 4, 4, 4, 4, 4, 4, 4</p>},
+            {<p>5, 5, 5, 5, 5, 5, 5, 5</p>}
+        }
+    </div>
+</body>
+</html>
