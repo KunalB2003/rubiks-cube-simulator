@@ -44,15 +44,12 @@ window.onload = () => {
 
     function bottomtops(index, bottom) {
         faces.removeChild(facesArr[index]);
-        facesArr[index].style.position = 'absolute';
-        facesArr[index].style.left = "12vw";
-        if (bottom) {
-            facesArr[index].style.top = "24vw";
-        } else {
-            facesArr[index].style.top = "0";
-        }
         cube.appendChild(facesArr[index]);
+        if (bottom) {
+            facesArr[index].id = 'bottom';
+        } else {
+            facesArr[index].id = 'top';
+        }
     }
     body.appendChild(cube);
-
 }
