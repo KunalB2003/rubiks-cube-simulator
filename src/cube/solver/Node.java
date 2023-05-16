@@ -1,23 +1,30 @@
 package src.cube.solver;
 
-import java.util.Arrays;
-
 import src.cube.Move;
+import src.cube.Cube;
 
-public class Node {
+public class Node implements Comparable<Node>{
 
-    protected int[][] state;
+    protected Cube cube;
     protected int costToReach;
     protected int estimatedCostToGoal;
     protected Node parent;
     protected Move lastMove;
 
-    public Node(int[][] state, int costToReach, int estimatedCostToGoal, Node parent, Move lastMove) {
-        this.state = state;
-        this.costToReach = costToReach;
-        this.estimatedCostToGoal = estimatedCostToGoal;
-        this.parent = parent;
+    public Node(Cube initial, Cube goal) {
+        this(null, null, goal);
+        this.cube = initial;
+        this.estimatedCostToGoal = cube.compareTo(goal);
+    }
+
+    public Node(Node parent, Move lastMove, Cube goal) {
+        if (lastMove != null) {
+            this.cube = parent.cube.move(lastMove);
+            this.costToReach = parent.costToReach + 1;
+            this.estimatedCostToGoal = cube.compareTo(goal);
+        }
         this.lastMove = lastMove;
+        this.parent = parent;
     }
 
     public int getTotalCost() {
@@ -26,7 +33,12 @@ public class Node {
     
     @Override
     public boolean equals(Object otherNode) {
-        return Arrays.deepEquals(state, ((Node)otherNode).state);
+        return cube.equals(((Node)otherNode).cube);
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return getTotalCost() - o.getTotalCost();
     }
 
 }
