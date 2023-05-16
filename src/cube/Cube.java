@@ -75,6 +75,7 @@ public class Cube implements Comparable<Cube> {
             }
             c = c.move(new Move(f, 1));
             System.out.println(c);
+            System.out.println(c.compareTo(new Cube()));
         }
         s.close();
     }
