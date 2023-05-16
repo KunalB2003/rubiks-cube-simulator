@@ -77,7 +77,7 @@ window.onload = () => {
                     e.innerHTML = text;
                     e.addEventListener("click", () => {
                         console.log("Click");
-                        incrementNum(parseInt(e.innerText));
+                        e.innerText = incrementNum(parseInt(e.innerText));
                     });
                     e.classList.add(c1, c2);
                 }
