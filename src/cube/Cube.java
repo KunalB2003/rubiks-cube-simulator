@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 import src.cube.solver.Solver;
 
-public class Cube implements Comparable<Cube>{
+public class Cube implements Comparable<Cube> {
 
     private static final int[][][] shuffleData = {
             { { 1, 2, 4, 3 }, { 1, 2, 3, 0 } },
@@ -48,7 +48,7 @@ public class Cube implements Comparable<Cube>{
         System.out.println(c);
 
         while (s.hasNextLine()) {
-            String in = s.nextLine();
+            String in = s.nextLine().trim();
             if (in.equals("reset")) {
                 c = new Cube();
                 System.out.println(c);
@@ -84,12 +84,12 @@ public class Cube implements Comparable<Cube>{
         int fval = m.face.getVal();
         int num = m.numMoves;
         for (int j = 0; j < 8; j++) {
-            out.states[fval][(j + 2*num)%8] = states[fval][j];
+            out.states[fval][(j + 2 * num) % 8] = states[fval][j];
         }
         int[] faceData = shuffleData[fval][0];
         int[] sideData = shuffleData[fval][1];
         for (int j = 0; j < 4; j++) {
-            int j2 = (j+num)%4;
+            int j2 = (j + num) % 4;
             out.states[faceData[j2]][sideData[j2] * 2] = states[faceData[j]][sideData[j] * 2];
             out.states[faceData[j2]][sideData[j2] * 2 + 1] = states[faceData[j]][sideData[j] * 2 + 1];
             out.states[faceData[j2]][(sideData[j2] * 2 + 2) % 8] = states[faceData[j]][(sideData[j] * 2 + 2) % 8];
@@ -99,15 +99,28 @@ public class Cube implements Comparable<Cube>{
 
     @Override
     public int compareTo(Cube o) {
-        int incorrectPositions = 0;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (this.states[i][j] != o.states[i][j]) {
-                    incorrectPositions++;
-                }
+        // int incorrectPositions = 0;
+        // for (int i = 0; i < 6; i++) {
+        // for (int j = 0; j < 8; j++) {
+        // if (this.states[i][j] != o.states[i][j]) {
+        // incorrectPositions++;
+        // }
+        // }
+        // }
+        // return incorrectPositions;
+
+        int incorrectCubies = 0;
+
+        for (int[][] cubie : Cubie.CUBIE_DATA) {
+            for (int[] pos : cubie) {
+                if (this.states[pos[0]][pos[1]] != o.states[pos[0]][pos[1]]) {
+                    incorrectCubies++;
+                    break;
+                } 
             }
         }
-        return incorrectPositions;
+
+        return incorrectCubies;
     }
 
     @Override
@@ -115,7 +128,7 @@ public class Cube implements Comparable<Cube>{
         if (!(o instanceof Cube)) {
             return false;
         }
-        boolean temp = Arrays.deepEquals(states, ((Cube)o).states);
+        boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
         return temp;
     }
 
