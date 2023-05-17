@@ -12,7 +12,7 @@ import src.cube.Move;
 
 public class Solver {
 
-    //private int[][] initialState, endState;
+    // private int[][] initialState, endState;
     private Cube initialCube, endCube;
 
     private Move[] moveList;
@@ -37,18 +37,19 @@ public class Solver {
             int curG = currentNode.estimatedCostToGoal;
 
             if (currentNode.cube.equals(endCube)) {
-                System.out.println("sol found ("+counter+" nodes evaluated)");
+                System.out.println("sol found (" + counter + " nodes evaluated)");
                 Stack<Node> stack = new Stack<Node>();
                 Stream
-                    .iterate(currentNode, n -> n.parent != null, n -> n.parent)
-                    .forEach(stack::add);
+                        .iterate(currentNode, n -> n.parent != null, n -> n.parent)
+                        .forEach(stack::add);
                 List<Move> moves = new ArrayList<Move>();
                 while (!stack.empty()) {
                     Node n = stack.peek();
-                    System.out.println(n.lastMove+", "+n.costToReach+", "+n.estimatedCostToGoal+", t:"+n.getTotalCost());
+                    System.out.println(n.lastMove + ", " + n.costToReach + ", " + n.estimatedCostToGoal + ", t:"
+                            + n.getTotalCost());
                     moves.add(stack.pop().lastMove);
                 }
-                //moves.forEach(m -> System.out.print(m + " "));
+                // moves.forEach(m -> System.out.print(m + " "));
                 return moves;
             }
             for (int i = 0; i < moveList.length; i++) {

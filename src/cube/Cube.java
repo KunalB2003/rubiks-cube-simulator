@@ -56,9 +56,9 @@ public class Cube implements Comparable<Cube> {
         for (int i = 0; i < this.states.length; i++) {
             for (int j = 0; j < this.states[0].length; j++) {
                 temp = temp.shiftLeft(3);
-                //temp = temp.multiply(new BigInteger("6"));
-                temp = temp.add(new BigInteger(""+(char) (this.states[i][j] + 48)));
-                
+                // temp = temp.multiply(new BigInteger("6"));
+                temp = temp.add(new BigInteger("" + (char) (this.states[i][j] + 48)));
+
             }
         }
         this.bigHash = temp;
@@ -148,7 +148,7 @@ public class Cube implements Comparable<Cube> {
         }
         // boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
         // return temp;
-        return this.bigHash.equals(((Cube)o).bigHash);
+        return this.bigHash.equals(((Cube) o).bigHash);
     }
 
     @Override

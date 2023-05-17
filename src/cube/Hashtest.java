@@ -18,9 +18,8 @@ public class Hashtest {
         // Node n2 = new Node(c5, new Cube());
         // System.out.println(set.contains(n2));
         // System.out.println(n1.equals(n2));
-        Node n1 = new Node(new Cube().move(new Move(Face.RIGHT,1)).move(new Move(Face.LEFT,1)), new Cube());
-        Node n2 = new Node(new Cube().move(new Move(Face.LEFT,1)).move(new Move(Face.RIGHT,1)), new Cube());
-
+        Node n1 = new Node(new Cube().move(new Move(Face.RIGHT, 1)).move(new Move(Face.LEFT, 1)), new Cube());
+        Node n2 = new Node(new Cube().move(new Move(Face.LEFT, 1)).move(new Move(Face.RIGHT, 1)), new Cube());
 
         System.out.println(n1.cube);
         System.out.println(n2.cube);

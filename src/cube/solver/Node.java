@@ -3,7 +3,10 @@ package src.cube.solver;
 import src.cube.Move;
 import src.cube.Cube;
 
-public class Node implements Comparable<Node>{
+public class Node implements Comparable<Node> {
+
+    private static final int costWeight = 2;
+    private static final int goalWeight = 1;
 
     public Cube cube;
     protected int costToReach;
@@ -28,12 +31,12 @@ public class Node implements Comparable<Node>{
     }
 
     public int getTotalCost() {
-        return costToReach + estimatedCostToGoal;
+        return costWeight * costToReach + goalWeight * estimatedCostToGoal;
     }
-    
+
     @Override
     public boolean equals(Object otherNode) {
-        return cube.equals(((Node)otherNode).cube);
+        return cube.equals(((Node) otherNode).cube);
     }
 
     @Override
