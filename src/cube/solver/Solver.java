@@ -26,7 +26,7 @@ public class Solver {
 
     public List<Move> solveCube() {
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        Set<Node> visited = new HashSet<Node>();
+        PriorityQueue<Node> visited = new PriorityQueue<Node>();
 
         queue.add(new Node(initialCube, endCube));
 
