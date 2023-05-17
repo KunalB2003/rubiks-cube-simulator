@@ -1,6 +1,6 @@
 package src.cube;
 
-import java.util.Arrays;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -21,26 +21,47 @@ public class Cube implements Comparable<Cube> {
 
     int[][] states;
 
+    BigInteger bigHash;
+
+    private static final int[][] DEFAULT_CUBE = {
+            { 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 1, 1, 1, 1, 1, 1, 1, 1 },
+            { 2, 2, 2, 2, 2, 2, 2, 2 },
+            { 3, 3, 3, 3, 3, 3, 3, 3 },
+            { 4, 4, 4, 4, 4, 4, 4, 4 },
+            { 5, 5, 5, 5, 5, 5, 5, 5 }
+    };
+
     public Cube() {
-        this.states = new int[6][8];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                this.states[i][j] = i;
-            }
-        }
+        this(DEFAULT_CUBE);
     }
 
     public Cube(int[][] states) {
+
         this.states = new int[6][8];
         for (int i = 0; i < states.length; i++) {
             for (int j = 0; j < states[i].length; j++) {
                 this.states[i][j] = states[i][j];
             }
         }
+        calcHash();
     }
 
-    public Cube getCopy() {
+    private Cube getCopy() {
         return new Cube(states);
+    }
+
+    private void calcHash() {
+        BigInteger temp = new BigInteger("0");
+        for (int i = 0; i < this.states.length; i++) {
+            for (int j = 0; j < this.states[0].length; j++) {
+                temp = temp.shiftLeft(3);
+                //temp = temp.multiply(new BigInteger("6"));
+                temp = temp.add(new BigInteger(""+(char) (this.states[i][j] + 48)));
+                
+            }
+        }
+        this.bigHash = temp;
     }
 
     // Chat based cube interface
@@ -81,6 +102,7 @@ public class Cube implements Comparable<Cube> {
             c = c.move(new Move(f, 1));
             System.out.println(c);
             System.out.println(c.compareTo(new Cube()));
+            System.out.println("hash: " + c.bigHash);
         }
         s.close();
     }
@@ -100,6 +122,7 @@ public class Cube implements Comparable<Cube> {
             out.states[faceData[j2]][sideData[j2] * 2 + 1] = states[faceData[j]][sideData[j] * 2 + 1];
             out.states[faceData[j2]][(sideData[j2] * 2 + 2) % 8] = states[faceData[j]][(sideData[j] * 2 + 2) % 8];
         }
+        out.calcHash();
         return out;
     }
 
@@ -123,8 +146,9 @@ public class Cube implements Comparable<Cube> {
         if (!(o instanceof Cube)) {
             return false;
         }
-        boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
-        return temp;
+        // boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
+        // return temp;
+        return this.bigHash.equals(((Cube)o).bigHash);
     }
 
     @Override
@@ -189,6 +213,11 @@ public class Cube implements Comparable<Cube> {
 
     public int[][] getStates() {
         return states;
+    }
+
+    @Override
+    public int hashCode() {
+        return bigHash.intValue();
     }
 
 }

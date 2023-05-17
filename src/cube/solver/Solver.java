@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Stream;
 
@@ -26,14 +25,13 @@ public class Solver {
 
     public List<Move> solveCube() {
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        PriorityQueue<Node> visited = new PriorityQueue<Node>();
+        HashSet<Node> avoidSet = new HashSet<Node>();
 
         queue.add(new Node(initialCube, endCube));
 
         int counter = 0;
         while (!queue.isEmpty()) {
             Node currentNode = queue.poll();
-            visited.add(currentNode);
 
             int curF = currentNode.costToReach;
             int curG = currentNode.estimatedCostToGoal;
@@ -56,10 +54,11 @@ public class Solver {
             for (int i = 0; i < moveList.length; i++) {
                 Move move = moveList[i];
 
-                Node queueEntry = new Node(currentNode, move, endCube);
+                Node adjacentNode = new Node(currentNode, move, endCube);
 
-                if (!queue.contains(queueEntry) && !visited.contains(queueEntry)) {
-                    queue.add(queueEntry);
+                if (!avoidSet.contains(adjacentNode)) {
+                    queue.add(adjacentNode);
+                    avoidSet.add(adjacentNode);
                 }
 
             }
