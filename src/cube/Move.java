@@ -1,6 +1,11 @@
 package src.cube;
 
-import static src.cube.Face.*;
+import static src.cube.Face.BACK;
+import static src.cube.Face.DOWN;
+import static src.cube.Face.FRONT;
+import static src.cube.Face.LEFT;
+import static src.cube.Face.RIGHT;
+import static src.cube.Face.UP;
 
 public class Move {
     protected Face face;
@@ -29,5 +34,9 @@ public class Move {
         }
 
         return allMoves;
+    }
+
+    public Move getReverse() {
+        return new Move(this.face, 4-this.numMoves);
     }
 }
