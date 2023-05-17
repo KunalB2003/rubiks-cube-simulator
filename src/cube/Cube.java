@@ -1,6 +1,7 @@
 package src.cube;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -91,6 +92,31 @@ public class Cube implements Comparable<Cube> {
                 List<Move> moves = solver.solveCube();
                 System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
                 c = new Cube();
+                continue;
+            } else if (in.contains("simulate")) {
+                int numRuns = 50;
+                int[] vals = new int[numRuns];
+
+                for (int i = 0; i < numRuns; i++) {
+
+                    c = new Cube();
+                    int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
+                    Scramble scramble = new Scramble(moves);
+                    c = scramble.getCube();
+
+                    Solver solver = new Solver(c, new Cube());
+                    List<Move> moves1 = solver.solveCube();
+                    c = new Cube();
+
+                    System.out.println("Cube " + (i + 1) + " solved");
+
+                    vals[i] = solver.counter;
+
+                }
+
+                System.out.println("Average: " + Arrays.stream(vals).average().orElse(0));
+                System.out.println("Median: " + Arrays.stream(vals).sorted().toArray()[numRuns / 2]);
+
                 continue;
             }
 

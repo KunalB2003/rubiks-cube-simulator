@@ -5,7 +5,7 @@ import src.cube.Cube;
 
 public class Node implements Comparable<Node> {
 
-    private static final int costWeight = 2;
+    private static final int costWeight = 8;
     private static final int goalWeight = 1;
 
     public Cube cube;

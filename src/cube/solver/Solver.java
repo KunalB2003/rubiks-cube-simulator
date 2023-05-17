@@ -14,13 +14,15 @@ public class Solver {
 
     // private int[][] initialState, endState;
     private Cube initialCube, endCube;
-
+    
     private Move[] moveList;
+    public int counter;
 
     public Solver(Cube initial, Cube end) {
         this.initialCube = initial;
         this.endCube = end;
         this.moveList = Move.allMoves();
+        this.counter = 0;
     }
 
     public List<Move> solveCube() {
@@ -29,7 +31,6 @@ public class Solver {
 
         queue.add(new Node(initialCube, endCube));
 
-        int counter = 0;
         while (!queue.isEmpty()) {
             Node currentNode = queue.poll();
 
