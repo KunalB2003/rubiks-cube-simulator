@@ -3,6 +3,7 @@ package src.cube;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import src.cube.solver.Solver;
@@ -67,14 +68,7 @@ public class Cube implements Comparable<Cube> {
             } else if (in.equals("solve")) {
                 Solver solver = new Solver(c, new Cube());
                 List<Move> moves = solver.solveCube();
-                //debug
-                System.out.println(c);
-                for (Move m : moves) {
-                    c = c.move(m);
-                    System.out.println(m);
-                    System.out.println(c);
-                }
-                //
+                System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
                 c = new Cube();
                 continue;
             }
