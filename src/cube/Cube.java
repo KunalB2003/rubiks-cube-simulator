@@ -1,6 +1,7 @@
 package src.cube;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -17,7 +18,7 @@ public class Cube implements Comparable<Cube> {
             { { 1, 3, 4, 2 }, { 3, 2, 1, 0 } }
     };
 
-    private int[][] states;
+    int[][] states;
 
     public Cube() {
         this.states = new int[6][8];
@@ -43,6 +44,8 @@ public class Cube implements Comparable<Cube> {
 
     // Chat based cube interface
     public static void main(String[] args) {
+        Cubie.initialize();
+
         Scanner s = new Scanner(System.in);
         Cube c = new Cube();
         System.out.println(c);
@@ -63,7 +66,15 @@ public class Cube implements Comparable<Cube> {
                 continue;
             } else if (in.equals("solve")) {
                 Solver solver = new Solver(c, new Cube());
-                solver.solveCube();
+                List<Move> moves = solver.solveCube();
+                //debug
+                System.out.println(c);
+                for (Move m : moves) {
+                    c = c.move(m);
+                    System.out.println(m);
+                    System.out.println(c);
+                }
+                //
                 c = new Cube();
                 continue;
             }
@@ -110,28 +121,7 @@ public class Cube implements Comparable<Cube> {
         // }
         // return incorrectPositions;
 
-        int incorrectCubies = 0;
-
-        /*for (int i = 0; i < Cubie.EDGES.length; i++) {
-            int[][] targetCubie = Cubie.EDGES[i];
-            int currentPos, rotation;
-            for (int j = 0; j < Cubie.EDGES.length; j++) {
-                int[][] currentCubie = Cubie.EDGES[j];
-                for (int r = 0; r < targetCubie.length; r++) {
-                    boolean match = true;
-                    for (int ri = 0; ri < targetCubie.length; ri++) {
-                        if (this.states[currentCubie[ri][0]][currentCubie[ri][1]] != o.states[targetCubie[(r+ri)%targetCubie.length][0]][targetCubie[(r+ri)%targetCubie.length][1]]) {
-                            match = false;
-                        }
-                    }
-                    if (match) {
-                        System.out.println("Cubie " + i + " in current cube needs to go to position " + j + " in target with " + r + " rotations");
-                    }
-                }
-            }
-        }*/
-
-        return incorrectCubies;
+        return Cubie.calculateHeuristic(this, o);
     }
 
     @Override

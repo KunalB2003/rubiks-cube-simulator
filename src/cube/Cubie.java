@@ -72,5 +72,36 @@ public class Cubie {
         edgeMap = getMovecountMap(EDGES);
         cornerMap = temp;
         initialized = true;
+        System.out.println("Done initializing heuristic");
+    }
+
+    public static int calculateHeuristic(Cube initial, Cube other) {
+        return calculateHeuristic(initial, other, CORNERS) + calculateHeuristic(initial, other, EDGES);
+    }
+
+    private static int calculateHeuristic(Cube initial, Cube other, int[][][] cubieSet) {
+        int numMovesHeuristic = 0;
+
+        currentCube: for (int i = 0; i < cubieSet.length; i++) {
+            int[][] currentCubie = cubieSet[i];
+            for (int j = 0; j < cubieSet.length; j++) {
+                int[][] targetCubie = cubieSet[j];
+                rotationCheck: for (int r = 0; r < targetCubie.length; r++) {
+                    for (int ri = 0; ri < targetCubie.length; ri++) {
+                        if (initial.states[currentCubie[ri][0]][currentCubie[ri][1]] != other.states[targetCubie[(r+ri)%targetCubie.length][0]][targetCubie[(r+ri)%targetCubie.length][1]]) {
+                            continue rotationCheck;
+                        }
+                    }
+                    //System.out.println("Edge " + i + " in current cube needs to go to position " + j + " in target with " + r + " rotations");
+                    if (initialized) {
+                        //System.out.println(((cubieSet == CORNERS) ?"C":"E")+": "+i + " -> " + j + " r"+r+", m="+((cubieSet == CORNERS) ? cornerMap : edgeMap)[i][j][r]);
+                    }
+                    numMovesHeuristic += ((cubieSet == CORNERS) ? cornerMap : edgeMap)[i][j][r];
+                    continue currentCube;
+                }
+            }
+        }
+
+        return numMovesHeuristic;
     }
 }
