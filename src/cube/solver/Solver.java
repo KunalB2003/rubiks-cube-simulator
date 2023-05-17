@@ -2,6 +2,7 @@ package src.cube.solver;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
@@ -23,7 +24,7 @@ public class Solver {
         this.moveList = Move.allMoves();
     }
 
-    public ArrayList<Move> solveCube() {
+    public List<Move> solveCube() {
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
         Set<Node> visited = new HashSet<Node>();
 
@@ -43,10 +44,12 @@ public class Solver {
                 Stream
                     .iterate(currentNode, n -> n.parent != null, n -> n.parent)
                     .forEach(stack::add);
+                List<Move> moves = new ArrayList<Move>();
                 while (!stack.empty()) {
-                    System.out.print(stack.pop().lastMove + " ");
+                    moves.add(stack.pop().lastMove);
                 }
-                return null;
+                moves.forEach(m -> System.out.print(m + " "));
+                return moves;
             }
             for (int i = 0; i < moveList.length; i++) {
                 Move move = moveList[i];
@@ -64,7 +67,7 @@ public class Solver {
                 System.out.println(counter + " " + queue.size() + " " + curF + " " + curG);
             }
         }
-        return null;
+        return new ArrayList<Move>();
     }
 
 }
