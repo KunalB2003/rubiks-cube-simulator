@@ -17,9 +17,9 @@ public class Solver {
 
     private Move[] moveList;
 
-    public Solver(Cube cube) {
-        this.initialCube = cube;
-        endCube = new Cube();
+    public Solver(Cube initial, Cube end) {
+        this.initialCube = initial;
+        this.endCube = end;
         this.moveList = Move.allMoves();
     }
 

@@ -62,7 +62,7 @@ public class Cube implements Comparable<Cube> {
                 System.out.println(c);
                 continue;
             } else if (in.equals("solve")) {
-                Solver solver = new Solver(c);
+                Solver solver = new Solver(c, new Cube());
                 solver.solveCube();
                 c = new Cube();
                 continue;
@@ -112,14 +112,24 @@ public class Cube implements Comparable<Cube> {
 
         int incorrectCubies = 0;
 
-        for (int[][] cubie : Cubie.CUBIE_DATA) {
-            for (int[] pos : cubie) {
-                if (this.states[pos[0]][pos[1]] != o.states[pos[0]][pos[1]]) {
-                    incorrectCubies++;
-                    break;
-                } 
+        /*for (int i = 0; i < Cubie.EDGES.length; i++) {
+            int[][] targetCubie = Cubie.EDGES[i];
+            int currentPos, rotation;
+            for (int j = 0; j < Cubie.EDGES.length; j++) {
+                int[][] currentCubie = Cubie.EDGES[j];
+                for (int r = 0; r < targetCubie.length; r++) {
+                    boolean match = true;
+                    for (int ri = 0; ri < targetCubie.length; ri++) {
+                        if (this.states[currentCubie[ri][0]][currentCubie[ri][1]] != o.states[targetCubie[(r+ri)%targetCubie.length][0]][targetCubie[(r+ri)%targetCubie.length][1]]) {
+                            match = false;
+                        }
+                    }
+                    if (match) {
+                        System.out.println("Cubie " + i + " in current cube needs to go to position " + j + " in target with " + r + " rotations");
+                    }
+                }
             }
-        }
+        }*/
 
         return incorrectCubies;
     }
