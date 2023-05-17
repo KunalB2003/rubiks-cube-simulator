@@ -9,9 +9,7 @@ public class Scramble {
     private Cube cube;
     private List<Move> moves;
 
-    public Scramble(int num) {
-
-        Random r = new Random();
+    public Scramble(Random r, int num) {
         moves = IntStream
                 .iterate(r.nextInt(6), t -> {
                     int j = r.nextInt(5);

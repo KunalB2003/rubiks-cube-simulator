@@ -3,6 +3,7 @@ package src.cube;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -71,6 +72,7 @@ public class Cube implements Comparable<Cube> {
 
         Scanner s = new Scanner(System.in);
         Cube c = new Cube();
+        Random r = new Random();
         System.out.println(c);
 
         while (s.hasNextLine()) {
@@ -78,11 +80,17 @@ public class Cube implements Comparable<Cube> {
             if (in.equals("reset")) {
                 c = new Cube();
                 System.out.println(c);
+                r = new Random();
+                continue;
+            } else if (in.contains("seed")) {
+                long val = Long.parseLong(in.substring(in.indexOf(' ') + 1));
+                r.setSeed(val);
+                System.out.println("Seed set to " + val);
                 continue;
             } else if (in.contains("scramble")) {
                 c = new Cube();
                 int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
-                Scramble scramble = new Scramble(moves);
+                Scramble scramble = new Scramble(r, moves);
                 System.out.println(scramble);
                 c = scramble.getCube();
                 System.out.println(c);
@@ -101,7 +109,7 @@ public class Cube implements Comparable<Cube> {
 
                     c = new Cube();
                     int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
-                    Scramble scramble = new Scramble(moves);
+                    Scramble scramble = new Scramble(r, moves);
                     c = scramble.getCube();
 
                     Solver solver = new Solver(c, new Cube());
