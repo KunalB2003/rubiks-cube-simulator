@@ -59,7 +59,7 @@ public class Cubie {
                     }
                     Cube initialCube = new Cube(initialState);
                     Cube endCube = new Cube(endState);
-                    Solver solver = new Solver(initialCube, endCube);
+                    Solver solver = new Solver(initialCube, endCube, 1);
                     movecountMap[start][end][rot] = solver.solveCube().size();
                 }
             }
