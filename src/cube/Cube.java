@@ -102,18 +102,20 @@ public class Cube implements Comparable<Cube> {
                 c = new Cube();
                 continue;
             } else if (in.contains("simulate")) {
-                int numRuns = 50;
+                int numRuns = 10;
                 int[] vals = new int[numRuns];
 
                 for (int i = 0; i < numRuns; i++) {
-
-                    c = new Cube();
+                    System.out.println();
+                    
                     int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
                     Scramble scramble = new Scramble(r, moves);
+                    System.out.println("Scramble: "+scramble);
                     c = scramble.getCube();
 
                     Solver solver = new Solver(c, new Cube());
                     List<Move> moves1 = solver.solveCube();
+                    System.out.println("Solution: "+moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));
                     c = new Cube();
 
                     System.out.println("Cube " + (i + 1) + " solved");
@@ -122,6 +124,7 @@ public class Cube implements Comparable<Cube> {
 
                 }
 
+                System.out.println();
                 System.out.println("Average: " + Arrays.stream(vals).average().orElse(0));
                 System.out.println("Median: " + Arrays.stream(vals).sorted().toArray()[numRuns / 2]);
 
