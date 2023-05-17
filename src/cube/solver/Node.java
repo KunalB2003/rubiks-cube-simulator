@@ -37,6 +37,11 @@ public class Node implements Comparable<Node>{
     }
 
     @Override
+    public int hashCode() {
+        return cube.hashCode();
+    }
+
+    @Override
     public int compareTo(Node o) {
         return getTotalCost() - o.getTotalCost();
     }

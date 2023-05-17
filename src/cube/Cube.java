@@ -1,5 +1,6 @@
 package src.cube;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -20,6 +21,8 @@ public class Cube implements Comparable<Cube> {
     };
 
     int[][] states;
+    private final int hashCode;
+    //private final BigInteger hashInt;
 
     public Cube() {
         this.states = new int[6][8];
@@ -28,9 +31,11 @@ public class Cube implements Comparable<Cube> {
                 this.states[i][j] = i;
             }
         }
+        hashCode = Arrays.deepHashCode(states);
     }
 
     public Cube(int[][] states) {
+        this();
         this.states = new int[6][8];
         for (int i = 0; i < states.length; i++) {
             for (int j = 0; j < states[i].length; j++) {
@@ -118,14 +123,14 @@ public class Cube implements Comparable<Cube> {
         return Cubie.calculateHeuristic(this, o);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Cube)) {
-            return false;
-        }
-        boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
-        return temp;
-    }
+    // @Override
+    // public boolean equals(Object o) {
+    //     if (!(o instanceof Cube)) {
+    //         return false;
+    //     }
+    //     boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
+    //     return temp;
+    // }
 
     @Override
     public String toString() {
@@ -189,6 +194,25 @@ public class Cube implements Comparable<Cube> {
 
     public int[][] getStates() {
         return states;
+    }
+
+    @Override
+    public int hashCode() {
+        return hashCode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cube other = (Cube) obj;
+        if (!Arrays.deepEquals(states, other.states))
+            return false;
+        return true;
     }
 
 }
