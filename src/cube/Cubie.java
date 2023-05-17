@@ -1,8 +1,5 @@
 package src.cube;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 import src.cube.solver.Solver;
 
 public class Cubie {
@@ -30,6 +27,11 @@ public class Cubie {
             { { 5, 5 }, { 3, 5 } },
             { { 5, 7 }, { 4, 3 } },
     };
+
+    private static int[][][] edgeMap = new int[EDGES.length][EDGES.length][EDGES[0].length];
+    private static int[][][] cornerMap = new int[CORNERS.length][CORNERS.length][CORNERS[0].length];
+    private static boolean initialized = false;
+    
     private static int[][] getBaseState() {
         int[][] base = new int[6][8];
         for (int i = 0; i < base.length; i++) {
@@ -40,13 +42,8 @@ public class Cubie {
         return base;
     }
 
-    public static void main(String[] args) {
-        // int start = 3;
-        // int end = 3;
-        // int rot = 1;
-        int[][][] cubieSet = EDGES;
-        
-        int[][][] movesMap = new int[cubieSet.length][cubieSet.length][cubieSet[0].length];
+    public static int[][][] getMovecountMap(int[][][] cubieSet) {
+        int[][][] movecountMap = new int[cubieSet.length][cubieSet.length][cubieSet[0].length];
         for (int start = 0; start < cubieSet.length; start++) {
             for (int end = 0; end < cubieSet.length; end++) {
                 for (int rot = 0; rot < cubieSet[0].length; rot++) {
@@ -62,32 +59,18 @@ public class Cubie {
                     }
                     Cube initialCube = new Cube(initialState);
                     Cube endCube = new Cube(endState);
-                    // System.out.println("initial");
-                    // System.out.println(initialCube);
-                    // System.out.println("end");
-                    // System.out.println(endCube);
                     Solver solver = new Solver(initialCube, endCube);
-                    //System.out.println(solver.solveCube().size());
-                    movesMap[start][end][rot] = solver.solveCube().size();
+                    movecountMap[start][end][rot] = solver.solveCube().size();
                 }
             }
         }
+        return movecountMap;
+    }
 
-
-        System.out.println();
-        System.out.print("{");
-        for (int i = 0; i < movesMap.length; i++) {
-            System.out.print("{");
-            for (int j = 0; j < movesMap.length; j++) {
-                System.out.print("{");
-                // for (int k = 0; k < movesMap[0][0].length; k++) {
-                //     System.out.print(movesMap[i][j][k] + ", ");
-                // }
-                System.out.print(Arrays.stream(movesMap[i][j]).boxed().map(n -> n+"").collect(Collectors.joining(", ")));
-                System.out.print("},");
-            }
-            System.out.print("},\n");
-        }
-        System.out.print("}");
+    public static void initialize() {
+        int[][][] temp = getMovecountMap(CORNERS);
+        edgeMap = getMovecountMap(EDGES);
+        cornerMap = temp;
+        initialized = true;
     }
 }
