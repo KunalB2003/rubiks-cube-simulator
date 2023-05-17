@@ -96,7 +96,7 @@ public class Cube implements Comparable<Cube> {
                 System.out.println(c);
                 continue;
             } else if (in.equals("solve")) {
-                Solver solver = new Solver(c, new Cube());
+                Solver solver = new Solver(c, new Cube(), 10);
                 List<Move> moves = solver.solveCube();
                 System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
                 c = new Cube();
@@ -113,7 +113,7 @@ public class Cube implements Comparable<Cube> {
                     System.out.println("Scramble: "+scramble);
                     c = scramble.getCube();
 
-                    Solver solver = new Solver(c, new Cube());
+                    Solver solver = new Solver(c, new Cube(), 10);
                     List<Move> moves1 = solver.solveCube();
                     System.out.println("Solution: "+moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));
                     c = new Cube();
