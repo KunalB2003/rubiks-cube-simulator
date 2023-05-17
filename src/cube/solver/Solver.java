@@ -18,6 +18,9 @@ public class Solver {
     private Move[] moveList;
     public int counter;
 
+    private SearchBuffer forwardsSearch;
+    private SearchBuffer backwardsSearch;
+
     public Solver(Cube initial, Cube end) {
         this.initialCube = initial;
         this.endCube = end;
@@ -28,12 +31,7 @@ public class Solver {
     private class SearchBuffer {
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
         HashSet<Node> inactiveSet = new HashSet<Node>();
-        Cube goal;
-
-        public SearchBuffer(Cube goal) {
-            this.goal = goal;
-        }
-
+        
         public synchronized void tryAdd(Node n) {
             if (!contains(n)) {
                 queue.add(n);
@@ -64,10 +62,10 @@ public class Solver {
     }
 
     public List<Move> solveCube() {
-        SearchBuffer forwardsSearch = new SearchBuffer(endCube);
+        forwardsSearch = new SearchBuffer();
         forwardsSearch.tryAdd(new Node(initialCube, endCube));
 
-        SearchBuffer backwardsSearch = new SearchBuffer(initialCube);
+        backwardsSearch = new SearchBuffer();
         backwardsSearch.tryAdd(new Node(endCube, initialCube));
 
         while (!forwardsSearch.isEmpty() && !backwardsSearch.isEmpty()) {
@@ -77,43 +75,16 @@ public class Solver {
             int curF = currentNode.costToReach;
             int curG = currentNode.estimatedCostToGoal;
 
-            if (currentNode.cube.equals(curSearch.goal)) {
-                System.out.println("sol found (" + counter + " nodes evaluated)");
-                Stack<Node> stack = new Stack<Node>();
-                Stream
-                        .iterate(currentNode, n -> n.parent != null, n -> n.parent)
-                        .forEach(stack::add);
-                List<Move> moves = new ArrayList<Move>();
-                while (!stack.empty()) {
-                    Node n = stack.peek();
-                    System.out.println(n.lastMove + ", " + n.costToReach + ", " + n.estimatedCostToGoal + ", t:"
-                            + n.getTotalCost());
-                    moves.add(stack.pop().lastMove);
-                }
-                // moves.forEach(m -> System.out.print(m + " "));
-                return moves;
-            } else if (curSearch == forwardsSearch && backwardsSearch.contains(currentNode)) { // check for intersection
-                System.out.println("Intersection found (" + counter + " nodes evaluated)");
-                Stack<Node> stack = new Stack<Node>();
-                Stream
-                        .iterate(currentNode, n -> n.parent != null, n -> n.parent)
-                        .forEach(stack::add);
-                List<Move> moves = new ArrayList<Move>();
-                while (!stack.empty()) {
-                    Node n = stack.peek();
-                    System.out.println(n.lastMove + ", " + n.costToReach + ", " + n.estimatedCostToGoal + ", t:"
-                            + n.getTotalCost());
-                    moves.add(stack.pop().lastMove);
-                }
-                Node backwardsNode = backwardsSearch.getEquivalentNode(currentNode);
-                Stream
-                        .iterate(backwardsNode, n -> n.parent != null, n -> n.parent)
-                        .forEach(n -> moves.add(n.lastMove.getReverse()));
-                return moves;
-            }
             for (int i = 0; i < moveList.length; i++) {
                 Move move = moveList[i];
                 Node adjacentNode = new Node(currentNode, move, endCube);
+
+                if (curSearch == forwardsSearch && backwardsSearch.contains(adjacentNode) || curSearch == backwardsSearch && forwardsSearch.contains(adjacentNode) ) {
+                    System.out.println("Intersection found (" + counter + " nodes evaluated)");
+
+                    return getSolution(adjacentNode, curSearch);
+                }
+
                 curSearch.tryAdd(adjacentNode);
             }
 
@@ -124,6 +95,31 @@ public class Solver {
         }
         System.out.println("solve failed");
         return new ArrayList<Move>();
+    }
+
+    private List<Move> getSolution(Node intersectionNode, SearchBuffer mainSearch) {
+        boolean forwards = mainSearch == forwardsSearch;
+        Stack<Node> stack = new Stack<Node>();
+        List<Move> moves = new ArrayList<Move>();
+        Stream
+                .iterate(intersectionNode, n -> n.parent != null, n -> n.parent)
+                .forEach(stack::add);
+        while (!stack.empty()) {
+            moves.add(stack.pop().lastMove);
+        }
+        Node oppositeNode = ((forwards)?backwardsSearch:forwardsSearch).getEquivalentNode(intersectionNode);
+        Stream
+                .iterate(oppositeNode, n -> n.parent != null, n -> n.parent)
+                .forEach(n -> moves.add(n.lastMove.getReverse()));
+
+        if (!forwards) {
+            List<Move> temp = new ArrayList<Move>();
+            for (int j = 0; j < moves.size(); j++) {
+                temp.add(0, moves.get(j).getReverse());
+            }
+            return temp;
+        }
+        return moves;
     }
 
 }
