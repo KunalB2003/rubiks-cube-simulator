@@ -2,6 +2,7 @@ package src.cube.solver;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Stack;
@@ -17,15 +18,15 @@ public class Solver {
 
     private Move[] moveList;
 
-    public Solver(Cube cube) {
-        this.initialCube = cube;
-        endCube = new Cube();
+    public Solver(Cube initial, Cube end) {
+        this.initialCube = initial;
+        this.endCube = end;
         this.moveList = Move.allMoves();
     }
 
-    public ArrayList<Move> solveCube() {
+    public List<Move> solveCube() {
         PriorityQueue<Node> queue = new PriorityQueue<Node>();
-        Set<Node> visited = new HashSet<Node>();
+        PriorityQueue<Node> visited = new PriorityQueue<Node>();
 
         queue.add(new Node(initialCube, endCube));
 
@@ -38,15 +39,19 @@ public class Solver {
             int curG = currentNode.estimatedCostToGoal;
 
             if (currentNode.cube.equals(endCube)) {
-                System.out.println("sol found");
+                System.out.println("sol found ("+counter+" nodes evaluated)");
                 Stack<Node> stack = new Stack<Node>();
                 Stream
                     .iterate(currentNode, n -> n.parent != null, n -> n.parent)
                     .forEach(stack::add);
+                List<Move> moves = new ArrayList<Move>();
                 while (!stack.empty()) {
-                    System.out.print(stack.pop().lastMove + " ");
+                    Node n = stack.peek();
+                    System.out.println(n.lastMove+", "+n.costToReach+", "+n.estimatedCostToGoal+", t:"+n.getTotalCost());
+                    moves.add(stack.pop().lastMove);
                 }
-                return null;
+                //moves.forEach(m -> System.out.print(m + " "));
+                return moves;
             }
             for (int i = 0; i < moveList.length; i++) {
                 Move move = moveList[i];
@@ -60,11 +65,11 @@ public class Solver {
             }
 
             counter++;
-            if (counter % 10 == 0) {
+            if (counter % 100 == 0) {
                 System.out.println(counter + " " + queue.size() + " " + curF + " " + curG);
             }
         }
-        return null;
+        return new ArrayList<Move>();
     }
 
 }

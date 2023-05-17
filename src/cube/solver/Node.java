@@ -28,7 +28,7 @@ public class Node implements Comparable<Node>{
     }
 
     public int getTotalCost() {
-        return costToReach + estimatedCostToGoal;
+        return 4*costToReach + estimatedCostToGoal;
     }
     
     @Override

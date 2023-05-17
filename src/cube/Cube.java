@@ -1,12 +1,14 @@
 package src.cube;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import src.cube.solver.Solver;
 
-public class Cube implements Comparable<Cube>{
+public class Cube implements Comparable<Cube> {
 
     private static final int[][][] shuffleData = {
             { { 1, 2, 4, 3 }, { 1, 2, 3, 0 } },
@@ -17,7 +19,7 @@ public class Cube implements Comparable<Cube>{
             { { 1, 3, 4, 2 }, { 3, 2, 1, 0 } }
     };
 
-    private int[][] states;
+    int[][] states;
 
     public Cube() {
         this.states = new int[6][8];
@@ -43,12 +45,14 @@ public class Cube implements Comparable<Cube>{
 
     // Chat based cube interface
     public static void main(String[] args) {
+        Cubie.initialize();
+
         Scanner s = new Scanner(System.in);
         Cube c = new Cube();
         System.out.println(c);
 
         while (s.hasNextLine()) {
-            String in = s.nextLine();
+            String in = s.nextLine().trim();
             if (in.equals("reset")) {
                 c = new Cube();
                 System.out.println(c);
@@ -62,8 +66,9 @@ public class Cube implements Comparable<Cube>{
                 System.out.println(c);
                 continue;
             } else if (in.equals("solve")) {
-                Solver solver = new Solver(c);
-                solver.solveCube();
+                Solver solver = new Solver(c, new Cube());
+                List<Move> moves = solver.solveCube();
+                System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
                 c = new Cube();
                 continue;
             }
@@ -75,6 +80,7 @@ public class Cube implements Comparable<Cube>{
             }
             c = c.move(new Move(f, 1));
             System.out.println(c);
+            System.out.println(c.compareTo(new Cube()));
         }
         s.close();
     }
@@ -84,12 +90,12 @@ public class Cube implements Comparable<Cube>{
         int fval = m.face.getVal();
         int num = m.numMoves;
         for (int j = 0; j < 8; j++) {
-            out.states[fval][(j + 2*num)%8] = states[fval][j];
+            out.states[fval][(j + 2 * num) % 8] = states[fval][j];
         }
         int[] faceData = shuffleData[fval][0];
         int[] sideData = shuffleData[fval][1];
         for (int j = 0; j < 4; j++) {
-            int j2 = (j+num)%4;
+            int j2 = (j + num) % 4;
             out.states[faceData[j2]][sideData[j2] * 2] = states[faceData[j]][sideData[j] * 2];
             out.states[faceData[j2]][sideData[j2] * 2 + 1] = states[faceData[j]][sideData[j] * 2 + 1];
             out.states[faceData[j2]][(sideData[j2] * 2 + 2) % 8] = states[faceData[j]][(sideData[j] * 2 + 2) % 8];
@@ -99,15 +105,17 @@ public class Cube implements Comparable<Cube>{
 
     @Override
     public int compareTo(Cube o) {
-        int incorrectPositions = 0;
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (this.states[i][j] != o.states[i][j]) {
-                    incorrectPositions++;
-                }
-            }
-        }
-        return incorrectPositions;
+        // int incorrectPositions = 0;
+        // for (int i = 0; i < 6; i++) {
+        // for (int j = 0; j < 8; j++) {
+        // if (this.states[i][j] != o.states[i][j]) {
+        // incorrectPositions++;
+        // }
+        // }
+        // }
+        // return incorrectPositions;
+
+        return Cubie.calculateHeuristic(this, o);
     }
 
     @Override
@@ -115,7 +123,7 @@ public class Cube implements Comparable<Cube>{
         if (!(o instanceof Cube)) {
             return false;
         }
-        boolean temp = Arrays.deepEquals(states, ((Cube)o).states);
+        boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
         return temp;
     }
 
