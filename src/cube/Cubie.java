@@ -36,7 +36,7 @@ public class Cubie {
         int[][] base = new int[6][8];
         for (int i = 0; i < base.length; i++) {
             for (int j = 0; j < base[i].length; j++) {
-                base[i][j] = 9;
+                base[i][j] = 5;
             }
         }
         return base;

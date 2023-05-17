@@ -5,7 +5,7 @@ import src.cube.Cube;
 
 public class Node implements Comparable<Node>{
 
-    protected Cube cube;
+    public Cube cube;
     protected int costToReach;
     protected int estimatedCostToGoal;
     protected Node parent;
@@ -28,7 +28,7 @@ public class Node implements Comparable<Node>{
     }
 
     public int getTotalCost() {
-        return 4*costToReach + estimatedCostToGoal;
+        return costToReach + estimatedCostToGoal;
     }
     
     @Override
