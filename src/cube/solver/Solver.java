@@ -64,8 +64,8 @@ public class Solver {
             }
 
             counter++;
-            if (counter % 100 == 0) {
-                System.out.println(counter + " " + queue.size() + " " + curF + " " + curG);
+            if (counter % 10000 == 0) {
+                System.out.println(counter + " " + queue.size() + " " + (curF + curG) + " " + curF + " " + curG);
             }
         }
         return new ArrayList<Move>();
