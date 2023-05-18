@@ -42,22 +42,29 @@ public class Engine {
                                 -3, 0, 0,
                                 0, 0, -3,
                 }).create());
-                meshes.add("tri2", new Mesh(new float[] {
-                                0, 0, -1.5f,
-                                -1, -1, -1.5f,
-                                0, -1, -1.5f
-                }).create());
-                meshes.add("square", new Quad(new float[] {
-                                -1, -1, 0,
-                                -1, 1, 0,
-                                1, 1, 0,
-                                1, -1, 0
-                }).create());
+                for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                                meshes.add("face1" + "piece" + i + j, new Quad(new float[] {
+                                        -1 + i, 0 + j, 0,
+                                        0 + i, 1 + j, 0,
+                                        -1 + i, 1 + j, 0,
+                                        -1 + i, 0 + j, 0,
+                                }));
+                        }
+                }
+                // meshes.add("tri2", new Mesh(new float[] {
+                // 0, 0, -1.5f,
+                // -1, -1, -1.5f,
+                // 0, -1, -1.5f
+                // }).create());
+                // meshes.add("square", new Quad(new float[] {
+                // -1, -1, 0,
+                // -1, 1, 0,
+                // 1, 1, 0,
+                // 1, -1, 0
+                // }).create());
 
                 shaders.add("floorWhite", new Shader().create(new float[] { 0.7f, 0.7f, 0.7f }));
-                shaders.add("cyan", new Shader().create(new float[] { 0, 1, 0.67f }));
-                shaders.add("cyan", new Shader().create(new float[] { 0, 1, 0.67f }));
-
                 shaders.add("cubeGreen", new Shader().create(new float[] { 0, 0.61f, 0.28f }));
                 shaders.add("cubeWhite", new Shader().create(new float[] { 1, 1, 1 }));
                 shaders.add("cubeRed", new Shader().create(new float[] { 0.72f, 0.07f, 0.20f }));
@@ -72,14 +79,14 @@ public class Engine {
                         if (!paused) {
                                 glClear(GL_COLOR_BUFFER_BIT);
 
-                                scene.queue("floorPlane", "floorWhite",
-                                                null, null);
+                                scene.queue("floorPlane", "floorWhite", null, null);
+                                scene.queue("face1piece00", "cubeYellow", null, null);
 
-                                scene.queue("square", "cubeYellow",
-                                                null, null);
+                                // scene.queue("square", "cubeYellow",
+                                // null, null);
 
-                                scene.queue("tri2", "cubeWhite",
-                                                null, null);
+                                // scene.queue("tri2", "cubeWhite",
+                                // null, null);
 
                                 scene.renderCamOrdered();
                                 window.swapBuffers();
