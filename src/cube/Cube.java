@@ -54,15 +54,14 @@ public class Cube implements Comparable<Cube> {
     }
 
     private void calcHash() {
-        BigInteger temp = new BigInteger("0");
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.states.length; i++) {
             for (int j = 0; j < this.states[0].length; j++) {
-                temp = temp.shiftLeft(3);
-                temp = temp.add(new BigInteger("" + (char) (this.states[i][j] + 48)));
+                sb.append((char) (this.states[i][j] + 48));
 
             }
         }
-        this.bigHash = temp;
+        this.bigHash = new BigInteger(sb.toString(), 6);
     }
 
     public Cube move(Move m) { // 1=>cwise 2=>double 3=ccwise
