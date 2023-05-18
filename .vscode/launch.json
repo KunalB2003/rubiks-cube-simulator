@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Engine",
+            "request": "launch",
+            "mainClass": "src.Engine",
+            "projectName": "rubiks-cube-simulator_a226e5f1"
+        },
+        {
+            "type": "java",
             "name": "Text",
             "request": "launch",
             "mainClass": "src.Text",
@@ -19,8 +26,8 @@
             "projectName": "rubiks-cube-simulator_a226e5f1",
             "vmArgs": "-D64 -Xmx10g",
             "args": [
-                "text",
-                "engine"
+                "engine",
+                "text"
             ]
         }
     ]

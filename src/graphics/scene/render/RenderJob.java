@@ -41,7 +41,9 @@ public class RenderJob {
         yN /= vertices.length;
         zN /= vertices.length;
 
-        tPos.changePosition(mesh.getTransform());
+        if (tPos != null) {
+            tPos.changePosition(mesh.getTransform());
+        }
 
         xN += mesh.getTransform().getPosition().x;
         yN += mesh.getTransform().getPosition().y;
