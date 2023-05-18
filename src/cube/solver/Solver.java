@@ -66,7 +66,7 @@ public class Solver {
         }
     }
 
-    public List<Move> solveCube() {
+    public List<Move> solveCube(boolean printThroughput) {
         forwardsSearch = new SearchBuffer();
         forwardsSearch.tryAdd(new Node(initialCube, endCube));
 
@@ -75,7 +75,7 @@ public class Solver {
 
         SolverThread[] threads = new SolverThread[numThreads];
         for (int i = 0; i < numThreads; i++) {
-            threads[i] = new SolverThread(this, "Thread " + i);
+            threads[i] = new SolverThread(this, "Thread " + i, System.currentTimeMillis(), printThroughput);
         }
 
         synchronized (this) {
@@ -118,10 +118,14 @@ public class Solver {
     private class SolverThread extends Thread {
 
         Solver parent;
+        long startTime, endTime;
+        boolean printThroughput;
 
-        public SolverThread(Solver parent, String name) {
+        public SolverThread(Solver parent, String name, long start, boolean printThroughput) {
             super(name);
             this.parent = parent;
+            this.startTime = start;
+            this.printThroughput = printThroughput;
             start();
         }
 
@@ -140,7 +144,10 @@ public class Solver {
 
                     if (curSearch == forwardsSearch && backwardsSearch.contains(adjacentNode)
                             || curSearch == backwardsSearch && forwardsSearch.contains(adjacentNode)) {
-                        System.out.println(getName() + ": Intersection found (" + counter + " nodes evaluated)");
+                            this.endTime = System.currentTimeMillis();
+                        if (printThroughput) {
+                            System.out.println(getName() + "(" + (endTime - startTime) + "ms): Intersection found (" + counter + " nodes evaluated)");
+                        }
 
                         parent.solution = parent.getSolution(adjacentNode, curSearch);
                         synchronized (parent) {
@@ -153,9 +160,9 @@ public class Solver {
 
                     curSearch.tryAdd(adjacentNode);
                 }
-                
+
                 parent.counter++;
-                if (parent.counter % 10000 == 0) {
+                if (parent.counter % 25000 == 0) {
                     System.out.println(
                             counter + " " + curSearch.queue.size() + " " + (curF + curG) + " " + curF + " " + curG);
                 }

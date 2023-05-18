@@ -58,7 +58,7 @@ public class Text {
         });
         commands.put("solve", (commandArgs) -> {
             Solver solver = new Solver(cube, new Cube(), 10);
-            List<Move> moves = solver.solveCube();
+            List<Move> moves = solver.solveCube(true);
             System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
             cube = new Cube();
         });
@@ -81,7 +81,7 @@ public class Text {
                 cube = scramble.getCube();
 
                 Solver solver = new Solver(cube, new Cube(), 10);
-                List<Move> moves1 = solver.solveCube();
+                List<Move> moves1 = solver.solveCube(true);
                 System.out.println(
                         "Solution: " +
                                 moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));

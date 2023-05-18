@@ -59,7 +59,7 @@ public class Cubie {
                     Cube initialCube = new Cube(initialState);
                     Cube endCube = new Cube(endState);
                     Solver solver = new Solver(initialCube, endCube, 1);
-                    movecountMap[start][end][rot] = solver.solveCube().size();
+                    movecountMap[start][end][rot] = solver.solveCube(false).size();
                 }
             }
         }
@@ -68,9 +68,10 @@ public class Cubie {
 
     public static void initialize() {
         int[][][] temp = getMovecountMap(CORNERS);
+        System.out.println("Initialized corner heuristics");
         edgeMap = getMovecountMap(EDGES);
+        System.out.println("Initialized edge heuristics");
         cornerMap = temp;
-        System.out.println("Done initializing heuristic");
     }
 
     public static int calculateHeuristic(Cube initial, Cube other) {
