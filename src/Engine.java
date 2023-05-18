@@ -15,7 +15,7 @@ import src.graphics.scene.helper.SceneHelper;
 import src.graphics.shapes.Mesh;
 import src.graphics.shapes.Quad;
 
-public class Main {
+public class Engine {
 
         public static int[] frame = { 0 };
         public static boolean paused = false;

@@ -28,7 +28,7 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
-import src.Main;
+import src.Engine;
 
 public class Window {
     private long window;
@@ -86,11 +86,11 @@ public class Window {
      */
     public boolean update() {
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_TRUE) {
-            System.out.println(Main.frame[0] -= 1);
+            System.out.println(Engine.frame[0] -= 1);
         }
 
         if (glfwGetMouseButton(window, 0) == 0) {
-            Main.paused = !Main.paused;
+            Engine.paused = !Engine.paused;
         }
 
         glfwPollEvents();

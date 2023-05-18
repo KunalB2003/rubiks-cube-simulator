@@ -58,7 +58,6 @@ public class Cube implements Comparable<Cube> {
         for (int i = 0; i < this.states.length; i++) {
             for (int j = 0; j < this.states[0].length; j++) {
                 temp = temp.shiftLeft(3);
-                // temp = temp.multiply(new BigInteger("6"));
                 temp = temp.add(new BigInteger("" + (char) (this.states[i][j] + 48)));
 
             }
@@ -107,15 +106,16 @@ public class Cube implements Comparable<Cube> {
 
                 for (int i = 0; i < numRuns; i++) {
                     System.out.println();
-                    
+
                     int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
                     Scramble scramble = new Scramble(r, moves);
-                    System.out.println("Scramble: "+scramble);
+                    System.out.println("Scramble: " + scramble);
                     c = scramble.getCube();
 
                     Solver solver = new Solver(c, new Cube(), 10);
                     List<Move> moves1 = solver.solveCube();
-                    System.out.println("Solution: "+moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));
+                    System.out.println(
+                            "Solution: " + moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));
                     c = new Cube();
 
                     System.out.println("Cube " + (i + 1) + " solved");
@@ -165,16 +165,6 @@ public class Cube implements Comparable<Cube> {
 
     @Override
     public int compareTo(Cube o) {
-        // int incorrectPositions = 0;
-        // for (int i = 0; i < 6; i++) {
-        // for (int j = 0; j < 8; j++) {
-        // if (this.states[i][j] != o.states[i][j]) {
-        // incorrectPositions++;
-        // }
-        // }
-        // }
-        // return incorrectPositions;
-
         return Cubie.calculateHeuristic(this, o);
     }
 
@@ -183,8 +173,6 @@ public class Cube implements Comparable<Cube> {
         if (!(o instanceof Cube)) {
             return false;
         }
-        // boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
-        // return temp;
         return this.bigHash.equals(((Cube) o).bigHash);
     }
 

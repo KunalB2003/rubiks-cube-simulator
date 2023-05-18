@@ -83,7 +83,8 @@ public class Solver {
             while (!done) {
                 try {
                     wait();
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
         }
 
