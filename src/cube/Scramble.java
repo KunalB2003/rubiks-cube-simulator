@@ -19,11 +19,6 @@ public class Scramble {
                 .boxed()
                 .map(t -> new Move(Face.intMap.get(t), r.nextInt(3) + 1))
                 .toList();
-        // Iterator<Move> movesIter = moves.iterator();
-        // cube = Stream
-        // .iterate(new Cube(), c -> movesIter.hasNext(), c -> c.move(movesIter.next()))
-        // .reduce((a, b) -> b)
-        // .orElse(null);
         cube = new Cube();
         moves.forEach(m -> cube = cube.move(m));
     }

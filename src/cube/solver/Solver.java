@@ -83,7 +83,8 @@ public class Solver {
             while (!done) {
                 try {
                     wait();
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
         }
 
@@ -153,7 +154,7 @@ public class Solver {
 
                     curSearch.tryAdd(adjacentNode);
                 }
-
+                
                 parent.counter++;
                 if (parent.counter % 10000 == 0) {
                     System.out.println(

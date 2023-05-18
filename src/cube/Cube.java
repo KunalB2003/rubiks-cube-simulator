@@ -54,94 +54,14 @@ public class Cube implements Comparable<Cube> {
     }
 
     private void calcHash() {
-        BigInteger temp = new BigInteger("0");
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.states.length; i++) {
             for (int j = 0; j < this.states[0].length; j++) {
-                temp = temp.shiftLeft(3);
-                // temp = temp.multiply(new BigInteger("6"));
-                temp = temp.add(new BigInteger("" + (char) (this.states[i][j] + 48)));
+                sb.append((char) (this.states[i][j] + 48));
 
             }
         }
-        this.bigHash = temp;
-    }
-
-    // Chat based cube interface
-    public static void main(String[] args) {
-        Cubie.initialize();
-
-        Scanner s = new Scanner(System.in);
-        Cube c = new Cube();
-        Random r = new Random();
-        System.out.println(c);
-
-        while (s.hasNextLine()) {
-            String in = s.nextLine().trim();
-            if (in.equals("reset")) {
-                c = new Cube();
-                System.out.println(c);
-                r = new Random();
-                continue;
-            } else if (in.contains("seed")) {
-                long val = Long.parseLong(in.substring(in.indexOf(' ') + 1));
-                r.setSeed(val);
-                System.out.println("Seed set to " + val);
-                continue;
-            } else if (in.contains("scramble")) {
-                c = new Cube();
-                int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
-                Scramble scramble = new Scramble(r, moves);
-                System.out.println(scramble);
-                c = scramble.getCube();
-                System.out.println(c);
-                continue;
-            } else if (in.equals("solve")) {
-                Solver solver = new Solver(c, new Cube(), 10);
-                List<Move> moves = solver.solveCube();
-                System.out.println(moves.stream().map(Move::toString).collect(Collectors.joining(" ")));
-                c = new Cube();
-                continue;
-            } else if (in.contains("simulate")) {
-                int numRuns = 10;
-                int[] vals = new int[numRuns];
-
-                for (int i = 0; i < numRuns; i++) {
-                    System.out.println();
-                    
-                    int moves = Integer.parseInt(in.substring(in.indexOf(' ') + 1));
-                    Scramble scramble = new Scramble(r, moves);
-                    System.out.println("Scramble: "+scramble);
-                    c = scramble.getCube();
-
-                    Solver solver = new Solver(c, new Cube(), 10);
-                    List<Move> moves1 = solver.solveCube();
-                    System.out.println("Solution: "+moves1.stream().map(Move::toString).collect(Collectors.joining(" ")));
-                    c = new Cube();
-
-                    System.out.println("Cube " + (i + 1) + " solved");
-
-                    vals[i] = solver.counter;
-
-                }
-
-                System.out.println();
-                System.out.println("Average: " + Arrays.stream(vals).average().orElse(0));
-                System.out.println("Median: " + Arrays.stream(vals).sorted().toArray()[numRuns / 2]);
-
-                continue;
-            }
-
-            Face f = Face.strMap.get(Character.toString(in.toUpperCase().charAt(0)));
-            System.out.println(in + ": " + f);
-            if (f == null) {
-                continue;
-            }
-            c = c.move(new Move(f, 1));
-            System.out.println(c);
-            System.out.println(c.compareTo(new Cube()));
-            System.out.println("hash: " + c.bigHash);
-        }
-        s.close();
+        this.bigHash = new BigInteger(sb.toString(), 6);
     }
 
     public Cube move(Move m) { // 1=>cwise 2=>double 3=ccwise
@@ -165,16 +85,6 @@ public class Cube implements Comparable<Cube> {
 
     @Override
     public int compareTo(Cube o) {
-        // int incorrectPositions = 0;
-        // for (int i = 0; i < 6; i++) {
-        // for (int j = 0; j < 8; j++) {
-        // if (this.states[i][j] != o.states[i][j]) {
-        // incorrectPositions++;
-        // }
-        // }
-        // }
-        // return incorrectPositions;
-
         return Cubie.calculateHeuristic(this, o);
     }
 
@@ -183,8 +93,6 @@ public class Cube implements Comparable<Cube> {
         if (!(o instanceof Cube)) {
             return false;
         }
-        // boolean temp = Arrays.deepEquals(states, ((Cube) o).states);
-        // return temp;
         return this.bigHash.equals(((Cube) o).bigHash);
     }
 
