@@ -17,6 +17,7 @@
             "request": "launch",
             "mainClass": "src.Run",
             "projectName": "rubiks-cube-simulator_a226e5f1",
+            "vmArgs": "-D64 -Xmx10g",
             "args": [
                 "text",
                 "engine"
