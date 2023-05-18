@@ -1,7 +1,5 @@
 package src;
 
-import src.cube.Cube;
-
 public class Run {
 
     public static void main(String[] args) {

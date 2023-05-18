@@ -1,14 +1,7 @@
 package src.cube;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import src.cube.solver.Solver;
 
 public class Cube implements Comparable<Cube> {
 

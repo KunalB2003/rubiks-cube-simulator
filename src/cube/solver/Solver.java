@@ -12,7 +12,6 @@ import src.cube.Move;
 
 public class Solver {
 
-    // private int[][] initialState, endState;
     private Cube initialCube, endCube;
 
     private Move[] moveList;
