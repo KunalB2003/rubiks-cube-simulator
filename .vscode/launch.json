@@ -6,13 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Text",
+            "request": "launch",
+            "mainClass": "src.Text",
+            "projectName": "rubiks-cube-simulator_a226e5f1"
+        },
+        {
+            "type": "java",
             "name": "Run",
             "request": "launch",
             "mainClass": "src.Run",
             "projectName": "rubiks-cube-simulator_a226e5f1",
-            "args": [ //Runs off of first argument
+            "args": [
                 "text",
-                "engine",
+                "engine"
             ]
         }
     ]
